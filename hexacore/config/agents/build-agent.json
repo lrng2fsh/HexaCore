@@ -1,0 +1,30 @@
+{
+  "id": "build-agent",
+  "role": "Build Engineer",
+  "description": "Compiles code, runs tests, packages artifacts, and manages deployments.",
+  "llm": {
+    "provider": "mock",
+    "model": "gpt-4o",
+    "temperature": 0.1
+  },
+  "tools": ["build", "file"],
+  "knowledgeSources": ["build-config"],
+  "permissions": {
+    "canReadFiles": true,
+    "canWriteFiles": true,
+    "canExecuteCommands": true,
+    "canAccessDatabase": false,
+    "canApprove": false
+  },
+  "communicationRules": [
+    "Handoff artifacts to QA after successful build",
+    "Report build failures immediately"
+  ],
+  "skills": [
+    "CI/CD",
+    "Docker",
+    "build automation",
+    "artifact management",
+    "deployment"
+  ]
+}

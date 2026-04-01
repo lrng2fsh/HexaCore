@@ -1,0 +1,30 @@
+{
+  "id": "qa-agent",
+  "role": "QA Engineer",
+  "description": "Reproduces bugs, writes test cases, validates fixes, and ensures no regressions.",
+  "llm": {
+    "provider": "mock",
+    "model": "gpt-4o",
+    "temperature": 0.1
+  },
+  "tools": ["file", "build"],
+  "knowledgeSources": ["test-suite"],
+  "permissions": {
+    "canReadFiles": true,
+    "canWriteFiles": true,
+    "canExecuteCommands": true,
+    "canAccessDatabase": false,
+    "canApprove": false
+  },
+  "communicationRules": [
+    "Report test results to Queen",
+    "Escalate blocking issues as risk messages"
+  ],
+  "skills": [
+    "test automation",
+    "bug reproduction",
+    "regression testing",
+    "test case design",
+    "coverage analysis"
+  ]
+}

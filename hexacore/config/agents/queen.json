@@ -1,0 +1,35 @@
+{
+  "id": "queen",
+  "role": "Queen Orchestrator",
+  "description": "Central orchestrator. Intakes tasks, builds DAGs, assigns work to specialist agents, monitors execution, and produces final summaries. Never does specialist work.",
+  "llm": {
+    "provider": "mock",
+    "model": "gpt-4o",
+    "temperature": 0.2
+  },
+  "fallbackLlm": {
+    "provider": "mock",
+    "model": "gpt-3.5-turbo"
+  },
+  "tools": [],
+  "knowledgeSources": [],
+  "permissions": {
+    "canReadFiles": false,
+    "canWriteFiles": false,
+    "canExecuteCommands": false,
+    "canAccessDatabase": false,
+    "canApprove": true
+  },
+  "communicationRules": [
+    "Only communicate via MessageBus",
+    "Delegate all specialist work",
+    "Enforce task dependencies"
+  ],
+  "skills": [
+    "task decomposition",
+    "DAG construction",
+    "agent coordination",
+    "risk assessment",
+    "summary generation"
+  ]
+}

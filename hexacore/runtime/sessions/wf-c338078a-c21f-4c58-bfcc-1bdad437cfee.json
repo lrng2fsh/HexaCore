@@ -1,0 +1,187 @@
+{
+  "id": "wf-c338078a-c21f-4c58-bfcc-1bdad437cfee",
+  "name": "Fix export failure in QA",
+  "description": "The export feature is failing with a null reference error when processing orders with empty items.",
+  "status": "done",
+  "nodes": [
+    {
+      "id": "task-af350f18-f877-4798-99d6-e3317a5a215c",
+      "type": "analyze_code",
+      "assigned_agent": "app-agent",
+      "dependencies": [],
+      "input": {
+        "request": {
+          "title": "Fix export failure in QA",
+          "description": "The export feature is failing with a null reference error when processing orders with empty items."
+        },
+        "instruction": "Analyze code for export failure root cause"
+      },
+      "status": "done",
+      "artifacts": [],
+      "startedAt": "2026-04-01T15:28:34.698Z",
+      "output": {
+        "finding": "Identified null reference in export handler at ExportService.ts:142",
+        "severity": "high",
+        "recommendation": "Add null check before accessing order.items",
+        "affectedFiles": [
+          "src/services/ExportService.ts",
+          "src/models/Order.ts"
+        ]
+      },
+      "completedAt": "2026-04-01T15:28:34.929Z"
+    },
+    {
+      "id": "task-d98b7836-a1c9-4371-a127-257210199705",
+      "type": "check_schema",
+      "assigned_agent": "dba-agent",
+      "dependencies": [],
+      "input": {
+        "request": {
+          "title": "Fix export failure in QA",
+          "description": "The export feature is failing with a null reference error when processing orders with empty items."
+        },
+        "instruction": "Check database schema for export-related issues"
+      },
+      "status": "done",
+      "artifacts": [],
+      "startedAt": "2026-04-01T15:28:34.932Z",
+      "output": {
+        "schemaInfo": {
+          "users": [
+            "id",
+            "name",
+            "email",
+            "created_at"
+          ],
+          "orders": [
+            "id",
+            "user_id",
+            "product",
+            "status",
+            "created_at"
+          ],
+          "exports": [
+            "id",
+            "order_id",
+            "format",
+            "status",
+            "error_message"
+          ]
+        },
+        "analysis": {
+          "finding": "exports table missing index on status column, causing full table scan",
+          "severity": "medium",
+          "recommendation": "CREATE INDEX idx_exports_status ON exports(status)",
+          "affectedTables": [
+            "exports",
+            "orders"
+          ]
+        }
+      },
+      "completedAt": "2026-04-01T15:28:35.193Z"
+    },
+    {
+      "id": "task-2ca90569-25e3-4044-9765-1ae9e422f4cb",
+      "type": "reproduce_bug",
+      "assigned_agent": "qa-agent",
+      "dependencies": [
+        "task-af350f18-f877-4798-99d6-e3317a5a215c",
+        "task-d98b7836-a1c9-4371-a127-257210199705"
+      ],
+      "input": {
+        "request": {
+          "title": "Fix export failure in QA",
+          "description": "The export feature is failing with a null reference error when processing orders with empty items."
+        },
+        "instruction": "Reproduce the export failure using findings from analysis"
+      },
+      "status": "done",
+      "artifacts": [],
+      "startedAt": "2026-04-01T15:28:35.200Z",
+      "output": {
+        "reproduced": true,
+        "steps": [
+          "Create order with 0 items",
+          "Trigger export",
+          "Observe NullReferenceException"
+        ],
+        "testCase": "test_export_empty_order",
+        "evidence": "Stack trace captured in logs/export-error-2024.log"
+      },
+      "completedAt": "2026-04-01T15:28:35.421Z"
+    },
+    {
+      "id": "task-698a6238-58f5-4133-acc3-84e61d81a11a",
+      "type": "build_fix",
+      "assigned_agent": "build-agent",
+      "dependencies": [
+        "task-2ca90569-25e3-4044-9765-1ae9e422f4cb"
+      ],
+      "input": {
+        "request": {
+          "title": "Fix export failure in QA",
+          "description": "The export feature is failing with a null reference error when processing orders with empty items."
+        },
+        "instruction": "Build and package the fix"
+      },
+      "status": "done",
+      "artifacts": [],
+      "startedAt": "2026-04-01T15:28:35.425Z",
+      "output": {
+        "buildResult": {
+          "status": "compiled",
+          "warnings": 0,
+          "errors": 0
+        },
+        "testResult": {
+          "passed": 42,
+          "failed": 0,
+          "skipped": 2,
+          "coverage": "87%"
+        },
+        "packageResult": {
+          "artifact": "build-1775057317118.zip",
+          "size": "2.4MB"
+        },
+        "analysis": {
+          "reproduced": true,
+          "steps": [
+            "Create order with 0 items",
+            "Trigger export",
+            "Observe NullReferenceException"
+          ],
+          "testCase": "test_export_empty_order",
+          "evidence": "Stack trace captured in logs/export-error-2024.log"
+        }
+      },
+      "completedAt": "2026-04-01T15:28:37.330Z"
+    },
+    {
+      "id": "task-5fec2c56-1636-4a98-9d82-cc3aaf115341",
+      "type": "validate_fix",
+      "assigned_agent": "qa-agent",
+      "dependencies": [
+        "task-698a6238-58f5-4133-acc3-84e61d81a11a"
+      ],
+      "input": {
+        "request": {
+          "title": "Fix export failure in QA",
+          "description": "The export feature is failing with a null reference error when processing orders with empty items."
+        },
+        "instruction": "Validate the fix resolves the export failure"
+      },
+      "status": "done",
+      "artifacts": [],
+      "startedAt": "2026-04-01T15:28:37.337Z",
+      "output": {
+        "validated": true,
+        "exportSuccess": true,
+        "regressionsPassed": true,
+        "summary": "Fix verified — export now handles empty order gracefully"
+      },
+      "completedAt": "2026-04-01T15:28:37.568Z"
+    }
+  ],
+  "createdAt": "2026-04-01T15:28:34.684Z",
+  "updatedAt": "2026-04-01T15:28:37.574Z"
+}

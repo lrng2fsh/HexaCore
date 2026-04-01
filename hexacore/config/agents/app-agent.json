@@ -1,0 +1,30 @@
+{
+  "id": "app-agent",
+  "role": "Application Engineer",
+  "description": "Analyzes application code, identifies bugs, traces root causes, and proposes code fixes.",
+  "llm": {
+    "provider": "mock",
+    "model": "gpt-4o",
+    "temperature": 0.1
+  },
+  "tools": ["file"],
+  "knowledgeSources": ["codebase"],
+  "permissions": {
+    "canReadFiles": true,
+    "canWriteFiles": true,
+    "canExecuteCommands": false,
+    "canAccessDatabase": false,
+    "canApprove": false
+  },
+  "communicationRules": [
+    "Report findings to Queen",
+    "Request clarification via question messages"
+  ],
+  "skills": [
+    "code analysis",
+    "root cause analysis",
+    "TypeScript",
+    "Node.js",
+    "API design"
+  ]
+}

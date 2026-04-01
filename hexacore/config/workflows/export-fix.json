@@ -1,0 +1,17 @@
+{
+  "name": "Fix Export Failure",
+  "description": "Sample workflow: diagnose and fix export failure in QA environment",
+  "trigger": {
+    "type": "manual",
+    "title": "Fix export failure in QA",
+    "description": "The export feature is failing with a null reference error when processing orders with empty items."
+  },
+  "expectedAgents": ["app-agent", "dba-agent", "qa-agent", "build-agent"],
+  "expectedFlow": [
+    "app-agent: analyze_code",
+    "dba-agent: check_schema (parallel with app-agent)",
+    "qa-agent: reproduce_bug (after app-agent + dba-agent)",
+    "build-agent: build_fix (after qa-agent)",
+    "qa-agent: validate_fix (after build-agent)"
+  ]
+}

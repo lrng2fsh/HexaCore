@@ -1,0 +1,72 @@
+{"timestamp":"2026-04-01T15:27:59.743Z","level":"INFO","context":"Orchestrator","message":"Initializing Hexacore..."}
+{"timestamp":"2026-04-01T15:27:59.746Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: file"}
+{"timestamp":"2026-04-01T15:27:59.746Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: sql"}
+{"timestamp":"2026-04-01T15:27:59.747Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: build"}
+{"timestamp":"2026-04-01T15:27:59.748Z","level":"DEBUG","context":"MessageBus","message":"Agent app-agent subscribed"}
+{"timestamp":"2026-04-01T15:27:59.748Z","level":"INFO","context":"app-agent","message":"Agent initialized — role: Application Engineer"}
+{"timestamp":"2026-04-01T15:27:59.749Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: app-agent"}
+{"timestamp":"2026-04-01T15:27:59.749Z","level":"DEBUG","context":"MessageBus","message":"Agent build-agent subscribed"}
+{"timestamp":"2026-04-01T15:27:59.750Z","level":"INFO","context":"build-agent","message":"Agent initialized — role: Build Engineer"}
+{"timestamp":"2026-04-01T15:27:59.750Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: build-agent"}
+{"timestamp":"2026-04-01T15:27:59.751Z","level":"DEBUG","context":"MessageBus","message":"Agent dba-agent subscribed"}
+{"timestamp":"2026-04-01T15:27:59.751Z","level":"INFO","context":"dba-agent","message":"Agent initialized — role: Database Administrator"}
+{"timestamp":"2026-04-01T15:27:59.751Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: dba-agent"}
+{"timestamp":"2026-04-01T15:27:59.752Z","level":"DEBUG","context":"MessageBus","message":"Agent qa-agent subscribed"}
+{"timestamp":"2026-04-01T15:27:59.752Z","level":"INFO","context":"qa-agent","message":"Agent initialized — role: QA Engineer"}
+{"timestamp":"2026-04-01T15:27:59.752Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: qa-agent"}
+{"timestamp":"2026-04-01T15:27:59.753Z","level":"DEBUG","context":"MessageBus","message":"Agent queen subscribed"}
+{"timestamp":"2026-04-01T15:27:59.753Z","level":"INFO","context":"queen","message":"Agent initialized — role: Queen Orchestrator"}
+{"timestamp":"2026-04-01T15:27:59.753Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: queen"}
+{"timestamp":"2026-04-01T15:27:59.753Z","level":"INFO","context":"AgentRegistry","message":"Loaded 5 agents from E:\\Dev\\HexaCore\\hexacore\\config\\agents"}
+{"timestamp":"2026-04-01T15:27:59.754Z","level":"INFO","context":"Orchestrator","message":"Hexacore initialized","data":{"agents":["app-agent","build-agent","dba-agent","qa-agent","queen"],"tools":["file","sql","build"]}}
+{"timestamp":"2026-04-01T15:27:59.756Z","level":"INFO","context":"API","message":"Hexacore backend running on http://localhost:3001"}
+{"timestamp":"2026-04-01T15:28:34.677Z","level":"INFO","context":"Orchestrator","message":"Task submitted","data":{"title":"Fix export failure in QA"}}
+{"timestamp":"2026-04-01T15:28:34.680Z","level":"INFO","context":"queen","message":"Intake task","data":{"title":"Fix export failure in QA"}}
+{"timestamp":"2026-04-01T15:28:34.686Z","level":"INFO","context":"WorkflowEngine","message":"Created workflow: wf-c338078a-c21f-4c58-bfcc-1bdad437cfee — Fix export failure in QA"}
+{"timestamp":"2026-04-01T15:28:34.690Z","level":"INFO","context":"MessageBus","message":"queen → * [finding]","data":{"task_id":"wf-c338078a-c21f-4c58-bfcc-1bdad437cfee","payload":{"message":"Queen created workflow: wf-c338078a-c21f-4c58-bfcc-1bdad437cfee","nodes":["task-af350f18-f877-4798-99d6-e3317a5a215c","task-d98b7836-a1c9-4371-a127-257210199705","task-2ca90569-25e3-4044-9765-1ae9e422f4cb","task-698a6238-58f5-4133-acc3-84e61d81a11a","task-5fec2c56-1636-4a98-9d82-cc3aaf115341"]}}}
+{"timestamp":"2026-04-01T15:28:34.691Z","level":"INFO","context":"queen","message":"Executing workflow","data":{"workflowId":"wf-c338078a-c21f-4c58-bfcc-1bdad437cfee"}}
+{"timestamp":"2026-04-01T15:28:34.694Z","level":"INFO","context":"WorkflowEngine","message":"Executing workflow: wf-c338078a-c21f-4c58-bfcc-1bdad437cfee"}
+{"timestamp":"2026-04-01T15:28:34.698Z","level":"INFO","context":"WorkflowEngine","message":"Running node task-af350f18-f877-4798-99d6-e3317a5a215c via app-agent"}
+{"timestamp":"2026-04-01T15:28:34.706Z","level":"INFO","context":"app-agent","message":"Analyzing code","data":{"taskType":"analyze_code","taskId":"task-af350f18-f877-4798-99d6-e3317a5a215c"}}
+{"timestamp":"2026-04-01T15:28:34.707Z","level":"INFO","context":"app-agent","message":"File scan result","data":{"success":true,"data":["agents","app.ts","core","models","types","utils"]}}
+{"timestamp":"2026-04-01T15:28:34.709Z","level":"DEBUG","context":"MockLLM","message":"Completing prompt (387 chars)"}
+{"timestamp":"2026-04-01T15:28:34.915Z","level":"INFO","context":"MessageBus","message":"app-agent → queen [finding]","data":{"task_id":"task-af350f18-f877-4798-99d6-e3317a5a215c","payload":{"agent":"app-agent","taskType":"analyze_code","analysis":{"finding":"Identified null reference in export handler at ExportService.ts:142","severity":"high","recommendation":"Add null check before accessing order.items","affectedFiles":["src/services/ExportService.ts","src/models/Order.ts"]}}}}
+{"timestamp":"2026-04-01T15:28:34.924Z","level":"DEBUG","context":"queen","message":"Received message [finding] from app-agent"}
+{"timestamp":"2026-04-01T15:28:34.927Z","level":"INFO","context":"app-agent","message":"Analysis complete","data":{"finding":"Identified null reference in export handler at ExportService.ts:142","severity":"high","recommendation":"Add null check before accessing order.items","affectedFiles":["src/services/ExportService.ts","src/models/Order.ts"]}}
+{"timestamp":"2026-04-01T15:28:34.929Z","level":"INFO","context":"WorkflowEngine","message":"Node task-af350f18-f877-4798-99d6-e3317a5a215c completed"}
+{"timestamp":"2026-04-01T15:28:34.932Z","level":"INFO","context":"WorkflowEngine","message":"Running node task-d98b7836-a1c9-4371-a127-257210199705 via dba-agent"}
+{"timestamp":"2026-04-01T15:28:34.935Z","level":"INFO","context":"dba-agent","message":"Checking database schema","data":{"taskType":"check_schema"}}
+{"timestamp":"2026-04-01T15:28:34.937Z","level":"DEBUG","context":"SqlAdapter","message":"Executing: schema","data":{}}
+{"timestamp":"2026-04-01T15:28:34.938Z","level":"DEBUG","context":"SqlAdapter","message":"Executing: query","data":{"sql":"SELECT * FROM exports WHERE status = \"failed\" LIMIT 10"}}
+{"timestamp":"2026-04-01T15:28:34.939Z","level":"INFO","context":"dba-agent","message":"Failed exports query","data":[{"id":1,"order_id":42,"format":"CSV","status":"failed","error_message":"Null reference in export handler"}]}
+{"timestamp":"2026-04-01T15:28:34.940Z","level":"DEBUG","context":"MockLLM","message":"Completing prompt (321 chars)"}
+{"timestamp":"2026-04-01T15:28:35.158Z","level":"INFO","context":"MessageBus","message":"dba-agent → queen [finding]","data":{"task_id":"task-d98b7836-a1c9-4371-a127-257210199705","payload":{"agent":"dba-agent","taskType":"check_schema","schemaInfo":{"users":["id","name","email","created_at"],"orders":["id","user_id","product","status","created_at"],"exports":["id","order_id","format","status","error_message"]},"analysis":{"finding":"exports table missing index on status column, causing full table scan","severity":"medium","recommendation":"CREATE INDEX idx_exports_status ON exports(status)","affectedTables":["exports","orders"]}}}}
+{"timestamp":"2026-04-01T15:28:35.190Z","level":"DEBUG","context":"queen","message":"Received message [finding] from dba-agent"}
+{"timestamp":"2026-04-01T15:28:35.191Z","level":"INFO","context":"dba-agent","message":"Schema analysis complete","data":{"finding":"exports table missing index on status column, causing full table scan","severity":"medium","recommendation":"CREATE INDEX idx_exports_status ON exports(status)","affectedTables":["exports","orders"]}}
+{"timestamp":"2026-04-01T15:28:35.193Z","level":"INFO","context":"WorkflowEngine","message":"Node task-d98b7836-a1c9-4371-a127-257210199705 completed"}
+{"timestamp":"2026-04-01T15:28:35.200Z","level":"INFO","context":"WorkflowEngine","message":"Running node task-2ca90569-25e3-4044-9765-1ae9e422f4cb via qa-agent"}
+{"timestamp":"2026-04-01T15:28:35.204Z","level":"INFO","context":"qa-agent","message":"QA task started","data":{"taskType":"reproduce_bug"}}
+{"timestamp":"2026-04-01T15:28:35.205Z","level":"DEBUG","context":"MockLLM","message":"Completing prompt (144 chars)"}
+{"timestamp":"2026-04-01T15:28:35.412Z","level":"INFO","context":"MessageBus","message":"qa-agent → queen [finding]","data":{"task_id":"task-2ca90569-25e3-4044-9765-1ae9e422f4cb","payload":{"agent":"qa-agent","taskType":"reproduce_bug","result":{"reproduced":true,"steps":["Create order with 0 items","Trigger export","Observe NullReferenceException"],"testCase":"test_export_empty_order","evidence":"Stack trace captured in logs/export-error-2024.log"}}}}
+{"timestamp":"2026-04-01T15:28:35.415Z","level":"DEBUG","context":"queen","message":"Received message [finding] from qa-agent"}
+{"timestamp":"2026-04-01T15:28:35.418Z","level":"INFO","context":"qa-agent","message":"QA reproduce_bug complete","data":{"reproduced":true,"steps":["Create order with 0 items","Trigger export","Observe NullReferenceException"],"testCase":"test_export_empty_order","evidence":"Stack trace captured in logs/export-error-2024.log"}}
+{"timestamp":"2026-04-01T15:28:35.421Z","level":"INFO","context":"WorkflowEngine","message":"Node task-2ca90569-25e3-4044-9765-1ae9e422f4cb completed"}
+{"timestamp":"2026-04-01T15:28:35.425Z","level":"INFO","context":"WorkflowEngine","message":"Running node task-698a6238-58f5-4133-acc3-84e61d81a11a via build-agent"}
+{"timestamp":"2026-04-01T15:28:35.426Z","level":"INFO","context":"build-agent","message":"Build task started","data":{"taskType":"build_fix"}}
+{"timestamp":"2026-04-01T15:28:35.427Z","level":"DEBUG","context":"BuildAdapter","message":"Executing: compile","data":{}}
+{"timestamp":"2026-04-01T15:28:35.944Z","level":"DEBUG","context":"BuildAdapter","message":"Executing: test","data":{}}
+{"timestamp":"2026-04-01T15:28:36.760Z","level":"DEBUG","context":"BuildAdapter","message":"Executing: package","data":{}}
+{"timestamp":"2026-04-01T15:28:37.118Z","level":"DEBUG","context":"MockLLM","message":"Completing prompt (226 chars)"}
+{"timestamp":"2026-04-01T15:28:37.322Z","level":"INFO","context":"MessageBus","message":"build-agent → queen [handoff]","data":{"task_id":"task-698a6238-58f5-4133-acc3-84e61d81a11a","payload":{"agent":"build-agent","taskType":"build_fix","buildResult":{"status":"compiled","warnings":0,"errors":0},"testResult":{"passed":42,"failed":0,"skipped":2,"coverage":"87%"},"packageResult":{"artifact":"build-1775057317118.zip","size":"2.4MB"},"analysis":{"reproduced":true,"steps":["Create order with 0 items","Trigger export","Observe NullReferenceException"],"testCase":"test_export_empty_order","evidence":"Stack trace captured in logs/export-error-2024.log"}}}}
+{"timestamp":"2026-04-01T15:28:37.325Z","level":"DEBUG","context":"queen","message":"Received message [handoff] from build-agent"}
+{"timestamp":"2026-04-01T15:28:37.328Z","level":"INFO","context":"build-agent","message":"Build complete","data":{"buildResult":{"status":"compiled","warnings":0,"errors":0},"testResult":{"passed":42,"failed":0,"skipped":2,"coverage":"87%"},"packageResult":{"artifact":"build-1775057317118.zip","size":"2.4MB"}}}
+{"timestamp":"2026-04-01T15:28:37.330Z","level":"INFO","context":"WorkflowEngine","message":"Node task-698a6238-58f5-4133-acc3-84e61d81a11a completed"}
+{"timestamp":"2026-04-01T15:28:37.337Z","level":"INFO","context":"WorkflowEngine","message":"Running node task-5fec2c56-1636-4a98-9d82-cc3aaf115341 via qa-agent"}
+{"timestamp":"2026-04-01T15:28:37.339Z","level":"INFO","context":"qa-agent","message":"QA task started","data":{"taskType":"validate_fix"}}
+{"timestamp":"2026-04-01T15:28:37.340Z","level":"DEBUG","context":"MockLLM","message":"Completing prompt (136 chars)"}
+{"timestamp":"2026-04-01T15:28:37.558Z","level":"INFO","context":"MessageBus","message":"qa-agent → queen [result]","data":{"task_id":"task-5fec2c56-1636-4a98-9d82-cc3aaf115341","payload":{"agent":"qa-agent","taskType":"validate_fix","result":{"validated":true,"exportSuccess":true,"regressionsPassed":true,"summary":"Fix verified — export now handles empty order gracefully"}}}}
+{"timestamp":"2026-04-01T15:28:37.563Z","level":"DEBUG","context":"queen","message":"Received message [result] from qa-agent"}
+{"timestamp":"2026-04-01T15:28:37.566Z","level":"INFO","context":"qa-agent","message":"QA validate_fix complete","data":{"validated":true,"exportSuccess":true,"regressionsPassed":true,"summary":"Fix verified — export now handles empty order gracefully"}}
+{"timestamp":"2026-04-01T15:28:37.569Z","level":"INFO","context":"WorkflowEngine","message":"Node task-5fec2c56-1636-4a98-9d82-cc3aaf115341 completed"}
+{"timestamp":"2026-04-01T15:28:37.616Z","level":"INFO","context":"WorkflowEngine","message":"Workflow wf-c338078a-c21f-4c58-bfcc-1bdad437cfee finished: done"}
+{"timestamp":"2026-04-01T15:28:37.618Z","level":"INFO","context":"MessageBus","message":"queen → * [result]","data":{"task_id":"wf-c338078a-c21f-4c58-bfcc-1bdad437cfee","payload":{"message":"Workflow complete","status":"done","summary":"Workflow DONE: 5/5 tasks completed.\n[app-agent] {\"finding\":\"Identified null reference in export handler at ExportService.ts:142\",\"severity\":\"high\",\"\n[dba-agent] {\"schemaInfo\":{\"users\":[\"id\",\"name\",\"email\",\"created_at\"],\"orders\":[\"id\",\"user_id\",\"product\",\"status\n[qa-agent] {\"reproduced\":true,\"steps\":[\"Create order with 0 items\",\"Trigger export\",\"Observe NullReferenceExcep\n[build-agent] {\"buildResult\":{\"status\":\"compiled\",\"warnings\":0,\"errors\":0},\"testResult\":{\"passed\":42,\"failed\":0,\"s\n[qa-agent] {\"validated\":true,\"exportSuccess\":true,\"regressionsPassed\":true,\"summary\":\"Fix verified — export now"}}}

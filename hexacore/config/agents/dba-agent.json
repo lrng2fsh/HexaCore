@@ -1,0 +1,30 @@
+{
+  "id": "dba-agent",
+  "role": "Database Administrator",
+  "description": "Inspects database schemas, queries, indexes, and data integrity. Identifies DB-level causes of failures.",
+  "llm": {
+    "provider": "mock",
+    "model": "gpt-4o",
+    "temperature": 0.1
+  },
+  "tools": ["sql"],
+  "knowledgeSources": ["schema-docs"],
+  "permissions": {
+    "canReadFiles": false,
+    "canWriteFiles": false,
+    "canExecuteCommands": false,
+    "canAccessDatabase": true,
+    "canApprove": false
+  },
+  "communicationRules": [
+    "Report schema findings to Queen",
+    "Flag data integrity risks"
+  ],
+  "skills": [
+    "SQL",
+    "schema design",
+    "query optimization",
+    "index analysis",
+    "data migration"
+  ]
+}
