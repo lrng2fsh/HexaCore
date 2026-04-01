@@ -12,8 +12,8 @@ const AGENT_ICONS: Record<string, React.ReactNode> = {
 };
 
 const STATUS_COLOR: Record<string, string> = {
-  idle: '#6b7280', busy: '#f59e0b', done: '#10b981',
-  error: '#ef4444', offline: '#374151', thinking: '#8b5cf6',
+  idle: '#94a3b8', busy: '#fbbf24', done: '#34d399',
+  error: '#f87171', offline: '#374151', thinking: '#a78bfa',
 };
 
 const MSG_TYPE_COLOR: Record<string, string> = {
@@ -24,9 +24,10 @@ const MSG_TYPE_COLOR: Record<string, string> = {
 interface HiveInspectorProps {
   agent: Agent | null;
   onClose: () => void;
+  isAnime?: boolean;
 }
 
-export function HiveInspector({ agent, onClose }: HiveInspectorProps) {
+export function HiveInspector({ agent, onClose, isAnime = false }: HiveInspectorProps) {
   const [tab, setTab] = useState<'overview' | 'messages' | 'artifacts' | 'permissions'>('overview');
 
   const agentMessages = MOCK_MESSAGES.filter(m => m.from === agent?.id || m.to === agent?.id);
@@ -41,7 +42,11 @@ export function HiveInspector({ agent, onClose }: HiveInspectorProps) {
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 320, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          className="flex flex-col w-72 h-full border-l border-amber-900/20 bg-hive-bg/95 backdrop-blur-sm relative z-40 overflow-hidden"
+          className="flex flex-col w-80 h-full backdrop-blur-sm relative z-40 overflow-hidden flex-shrink-0"
+          style={{
+            borderLeft: `1px solid ${isAnime ? 'rgba(0,255,240,0.15)' : 'color-mix(in srgb, var(--hive-accent) 12%, transparent)'}`,
+            background: isAnime ? 'rgba(2,4,10,0.97)' : 'color-mix(in srgb, var(--hive-bg) 95%, transparent)',
+          }}
         >
           {/* Header */}
           <div className="flex items-center gap-3 px-4 py-3 border-b border-amber-900/20">
@@ -73,9 +78,11 @@ export function HiveInspector({ agent, onClose }: HiveInspectorProps) {
               <button
                 key={t}
                 onClick={() => setTab(t)}
-                className={`flex-1 py-2 text-xs font-medium transition-colors capitalize ${
-                  tab === t ? 'text-amber-400 border-b border-amber-500' : 'text-slate-600 hover:text-slate-400'
-                }`}
+                className={`flex-1 py-2 text-xs font-medium transition-colors capitalize`}
+                style={{
+                  color: tab === t ? '#f0f0f5' : '#7c8499',
+                  borderBottom: tab === t ? '1px solid var(--hive-accent)' : '1px solid transparent',
+                }}
               >
                 {t}
               </button>
@@ -127,7 +134,7 @@ function OverviewTab({ agent }: { agent: Agent }) {
       {/* Current task */}
       {agent.currentTask && (
         <Section title="CURRENT TASK">
-          <div className="text-xs text-slate-300 leading-relaxed bg-amber-900/10 border border-amber-900/20 rounded p-2.5">
+          <div className="text-xs leading-relaxed bg-amber-900/10 border border-amber-900/20 rounded p-2.5" style={{ color: '#e2e8f0' }}>
             {agent.currentTask}
           </div>
         </Section>
@@ -138,13 +145,14 @@ function OverviewTab({ agent }: { agent: Agent }) {
         {agent.tools.length > 0 ? (
           <div className="flex flex-wrap gap-1.5">
             {agent.tools.map(t => (
-              <span key={t} className="px-2 py-0.5 bg-slate-800 border border-slate-700/50 rounded text-xs text-slate-400 font-mono">
+              <span key={t} className="px-2 py-0.5 rounded text-xs font-mono"
+                style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.14)', color: '#b8bdd0' }}>
                 {t}
               </span>
             ))}
           </div>
         ) : (
-          <span className="text-xs text-slate-600">No tools assigned</span>
+          <span className="text-xs" style={{ color: '#6b7280' }}>No tools assigned</span>
         )}
       </Section>
 
@@ -152,7 +160,8 @@ function OverviewTab({ agent }: { agent: Agent }) {
       <Section title="SKILLS">
         <div className="flex flex-wrap gap-1.5">
           {agent.skills.map(s => (
-            <span key={s} className="px-2 py-0.5 bg-amber-900/15 border border-amber-900/25 rounded text-xs text-amber-600/80">
+            <span key={s} className="px-2 py-0.5 rounded text-xs"
+              style={{ background: 'rgba(251,191,36,0.1)', border: '1px solid rgba(251,191,36,0.2)', color: '#b8bdd0' }}>
               {s}
             </span>
           ))}
@@ -183,16 +192,16 @@ function MessagesTab({ messages, agentId }: { messages: HiveMessage[]; agentId: 
                 style={{ background: `${MSG_TYPE_COLOR[m.type]}22`, color: MSG_TYPE_COLOR[m.type] }}>
                 {m.type}
               </span>
-              <span className="text-xs text-slate-600 ml-auto">
+              <span className="text-xs ml-auto" style={{ color: '#6b7280' }}>
                 {new Date(m.timestamp).toLocaleTimeString()}
               </span>
             </div>
-            <div className="flex items-center gap-1 text-xs text-slate-500 mb-1.5">
-              <span className={m.from === agentId ? 'text-amber-600' : 'text-slate-500'}>{m.from}</span>
-              <ChevronRight size={10} />
-              <span className={m.to === agentId ? 'text-amber-600' : 'text-slate-500'}>{m.to}</span>
+            <div className="flex items-center gap-1 text-xs mb-1.5">
+              <span style={{ color: m.from === agentId ? '#fbbf24' : '#94a3b8' }}>{m.from}</span>
+              <ChevronRight size={10} style={{ color: '#6b7280' }} />
+              <span style={{ color: m.to === agentId ? '#fbbf24' : '#94a3b8' }}>{m.to}</span>
             </div>
-            <div className="text-xs text-slate-300 leading-relaxed">{m.content}</div>
+            <div className="text-xs leading-relaxed" style={{ color: '#e2e8f0' }}>{m.content}</div>
           </div>
         ))
       )}
@@ -210,13 +219,14 @@ function ArtifactsTab({ artifacts }: { artifacts: typeof MOCK_ARTIFACTS }) {
         <div className="text-xs text-slate-600 text-center py-8">No artifacts yet</div>
       ) : (
         artifacts.map(a => (
-          <div key={a.id} className="flex items-center gap-2.5 p-2.5 rounded border border-slate-800 bg-slate-900/50 hover:border-amber-900/30 transition-colors cursor-pointer">
+          <div key={a.id} className="flex items-center gap-2.5 p-2.5 rounded border hover:border-amber-900/30 transition-colors cursor-pointer"
+            style={{ borderColor: 'rgba(255,255,255,0.07)', background: 'rgba(255,255,255,0.03)' }}>
             <span className="text-base">{TYPE_ICON[a.type] ?? '📄'}</span>
             <div className="flex-1 min-w-0">
-              <div className="text-xs text-slate-200 truncate font-mono">{a.name}</div>
-              <div className="text-xs text-slate-600">{a.size} · {new Date(a.timestamp).toLocaleTimeString()}</div>
+              <div className="text-xs truncate font-mono" style={{ color: '#e2e8f0' }}>{a.name}</div>
+              <div className="text-xs" style={{ color: '#6b7280' }}>{a.size} · {new Date(a.timestamp).toLocaleTimeString()}</div>
             </div>
-            <Package size={12} className="text-slate-600 flex-shrink-0" />
+            <Package size={12} style={{ color: '#6b7280' }} className="flex-shrink-0" />
           </div>
         ))
       )}
@@ -236,10 +246,10 @@ function PermissionsTab({ agent }: { agent: Agent }) {
   return (
     <div className="p-4 space-y-2">
       {perms.map(p => (
-        <div key={p.label} className="flex items-center justify-between py-1.5 border-b border-slate-800/50">
+        <div key={p.label} className="flex items-center justify-between py-1.5 border-b" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
           <div className="flex items-center gap-2">
             <Shield size={12} className={p.granted ? 'text-emerald-500' : 'text-slate-700'} />
-            <span className="text-xs text-slate-400">{p.label}</span>
+            <span className="text-xs" style={{ color: '#b8bdd0' }}>{p.label}</span>
           </div>
           <span className={`text-xs font-mono ${p.granted ? 'text-emerald-500' : 'text-slate-700'}`}>
             {p.granted ? 'GRANTED' : 'DENIED'}
@@ -253,7 +263,7 @@ function PermissionsTab({ agent }: { agent: Agent }) {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <div className="text-xs font-mono text-amber-700/70 tracking-widest mb-2">{title}</div>
+      <div className="text-xs font-mono tracking-widest mb-2" style={{ color: '#94a3b8' }}>{title}</div>
       {children}
     </div>
   );
@@ -261,9 +271,9 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 function StatCard({ label, value, color }: { label: string; value: number; color: string }) {
   return (
-    <div className="flex flex-col items-center py-2 bg-slate-900/50 rounded border border-slate-800">
+    <div className="flex flex-col items-center py-2 rounded border" style={{ background: 'rgba(255,255,255,0.03)', borderColor: 'rgba(255,255,255,0.07)' }}>
       <span className="text-lg font-bold" style={{ color }}>{value}</span>
-      <span className="text-xs text-slate-600">{label}</span>
+      <span className="text-xs" style={{ color: '#94a3b8' }}>{label}</span>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 {
   "name": "hexacore-frontend",
   "version": "1.0.0",
+  "type": "module",
   "description": "Hexacore AI Engineering OS — Frontend",
   "scripts": {
     "dev": "vite",

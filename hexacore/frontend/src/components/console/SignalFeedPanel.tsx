@@ -27,9 +27,10 @@ const MOCK_LOGS = [
 interface SignalFeedPanelProps {
   collapsed: boolean;
   onToggle: () => void;
+  isAnime?: boolean;
 }
 
-export function SignalFeedPanel({ collapsed, onToggle }: SignalFeedPanelProps) {
+export function SignalFeedPanel({ collapsed, onToggle, isAnime = false }: SignalFeedPanelProps) {
   const [tab, setTab] = useState<ConsoleTab>('signals');
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -45,23 +46,32 @@ export function SignalFeedPanel({ collapsed, onToggle }: SignalFeedPanelProps) {
   ];
 
   return (
-    <div className={`flex flex-col border-t border-amber-900/20 bg-hive-bg/95 backdrop-blur-sm transition-all duration-300 ${collapsed ? 'h-9' : 'h-44'}`}>
+    <div
+      className={`flex flex-col backdrop-blur-sm transition-all duration-300 flex-shrink-0 ${collapsed ? 'h-10' : 'h-52'}`}
+      style={{
+        borderTop: `1px solid ${isAnime ? 'rgba(0,255,240,0.15)' : 'color-mix(in srgb, var(--hive-accent) 12%, transparent)'}`,
+        background: isAnime ? 'rgba(2,4,10,0.97)' : 'color-mix(in srgb, var(--hive-bg) 95%, transparent)',
+      }}
+    >
       {/* Tab bar */}
-      <div className="flex items-center h-9 px-3 gap-1 border-b border-amber-900/15 flex-shrink-0">
+      <div className="flex items-center h-9 px-3 gap-1 flex-shrink-0"
+        style={{ borderBottom: `1px solid color-mix(in srgb, var(--hive-accent) 10%, transparent)` }}>
         <div className="flex items-center gap-0.5 flex-1">
           {TABS.map(t => (
             <button
               key={t.id}
               onClick={() => { setTab(t.id); if (collapsed) onToggle(); }}
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs transition-colors ${
-                tab === t.id && !collapsed
-                  ? 'bg-amber-900/20 text-amber-400 border border-amber-900/30'
-                  : 'text-slate-600 hover:text-slate-400'
-              }`}
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs transition-colors ${isAnime ? 'font-mono-tech' : 'font-mono'}`}
+              style={{
+                background: tab === t.id && !collapsed ? 'var(--hive-accent-muted)' : 'transparent',
+                color: tab === t.id && !collapsed ? '#f0f0f5' : '#7c8499',
+                border: `1px solid ${tab === t.id && !collapsed ? 'color-mix(in srgb, var(--hive-accent) 25%, transparent)' : 'transparent'}`,
+                borderBottom: tab === t.id && !collapsed ? '1px solid var(--hive-accent)' : undefined,
+              }}
             >
               {t.icon}
               <span>{t.label}</span>
-              <span className={`text-xs font-mono ${tab === t.id && !collapsed ? 'text-amber-600' : 'text-slate-700'}`}>
+              <span className="text-xs font-mono" style={{ color: tab === t.id && !collapsed ? '#fbbf24' : '#4b5563' }}>
                 {t.count}
               </span>
             </button>
@@ -106,19 +116,20 @@ function SignalsView() {
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: i * 0.03 }}
-          className="flex items-start gap-2.5 py-1 border-b border-slate-800/30"
+          className="flex items-start gap-2.5 py-1.5 border-b"
+          style={{ borderColor: 'rgba(255,255,255,0.06)' }}
         >
-          <span className="text-xs font-mono text-slate-700 flex-shrink-0 mt-0.5">
+          <span className="text-xs font-mono flex-shrink-0 mt-0.5" style={{ color: '#6b7280' }}>
             {new Date(m.timestamp).toLocaleTimeString()}
           </span>
           <span className="px-1.5 py-0.5 rounded text-xs font-mono font-semibold flex-shrink-0"
-            style={{ background: `${MSG_TYPE_COLOR[m.type]}18`, color: MSG_TYPE_COLOR[m.type] }}>
+            style={{ background: `${MSG_TYPE_COLOR[m.type]}22`, color: MSG_TYPE_COLOR[m.type] }}>
             {m.type}
           </span>
-          <span className="text-xs text-amber-700/80 flex-shrink-0">{m.from}</span>
-          <span className="text-xs text-slate-700">→</span>
-          <span className="text-xs text-slate-500 flex-shrink-0">{m.to}</span>
-          <span className="text-xs text-slate-400 truncate">{m.content}</span>
+          <span className="text-xs flex-shrink-0" style={{ color: '#fbbf24' }}>{m.from}</span>
+          <span className="text-xs" style={{ color: '#6b7280' }}>→</span>
+          <span className="text-xs flex-shrink-0" style={{ color: '#94a3b8' }}>{m.to}</span>
+          <span className="text-xs truncate" style={{ color: '#e2e8f0' }}>{m.content}</span>
         </motion.div>
       ))}
     </div>
@@ -139,12 +150,12 @@ function MessagesView() {
           <div className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0" style={{ background: MSG_TYPE_COLOR[m.type] }} />
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-0.5">
-              <span className="text-xs font-mono text-amber-600/80">{m.from}</span>
-              <span className="text-xs text-slate-700">→</span>
-              <span className="text-xs font-mono text-slate-500">{m.to}</span>
+              <span className="text-xs font-mono" style={{ color: '#fbbf24' }}>{m.from}</span>
+              <span className="text-xs" style={{ color: '#6b7280' }}>→</span>
+              <span className="text-xs font-mono" style={{ color: '#94a3b8' }}>{m.to}</span>
               <span className="text-xs font-mono ml-auto" style={{ color: MSG_TYPE_COLOR[m.type] }}>{m.type}</span>
             </div>
-            <div className="text-xs text-slate-400 truncate">{m.content}</div>
+            <div className="text-xs truncate" style={{ color: '#d1d5db' }}>{m.content}</div>
           </div>
         </motion.div>
       ))}
@@ -153,7 +164,7 @@ function MessagesView() {
 }
 
 function LogsView() {
-  const LEVEL_COLOR: Record<string, string> = { INFO: '#6b7280', WARN: '#f59e0b', ERROR: '#ef4444', DEBUG: '#8b5cf6' };
+  const LEVEL_COLOR: Record<string, string> = { INFO: '#94a3b8', WARN: '#fbbf24', ERROR: '#f87171', DEBUG: '#a78bfa' };
   return (
     <div className="space-y-0.5 font-mono">
       {MOCK_LOGS.map((l, i) => (
@@ -164,10 +175,10 @@ function LogsView() {
           transition={{ delay: i * 0.02 }}
           className="flex items-start gap-2 text-xs py-0.5"
         >
-          <span className="text-slate-700 flex-shrink-0">{new Date(l.ts).toLocaleTimeString()}</span>
+          <span className="flex-shrink-0" style={{ color: '#6b7280' }}>{new Date(l.ts).toLocaleTimeString()}</span>
           <span className="flex-shrink-0 w-10" style={{ color: LEVEL_COLOR[l.level] }}>{l.level}</span>
-          <span className="text-amber-700/70 flex-shrink-0">[{l.ctx}]</span>
-          <span className="text-slate-400">{l.msg}</span>
+          <span className="flex-shrink-0" style={{ color: '#a78bfa' }}>[{l.ctx}]</span>
+          <span style={{ color: '#d1d5db' }}>{l.msg}</span>
         </motion.div>
       ))}
     </div>
@@ -186,11 +197,12 @@ function ArtifactsView() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: i * 0.05 }}
-          className="flex items-center gap-2 px-2.5 py-1.5 rounded border border-slate-800 bg-slate-900/50 hover:border-amber-900/30 cursor-pointer transition-colors"
+          className="flex items-center gap-2 px-2.5 py-1.5 rounded cursor-pointer transition-colors"
+          style={{ border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.04)' }}
         >
           <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: TYPE_COLOR[a.type] }} />
-          <span className="text-xs font-mono text-slate-300">{a.name}</span>
-          <span className="text-xs text-slate-600">{a.size}</span>
+          <span className="text-xs font-mono" style={{ color: '#e2e8f0' }}>{a.name}</span>
+          <span className="text-xs" style={{ color: '#6b7280' }}>{a.size}</span>
         </motion.div>
       ))}
     </div>

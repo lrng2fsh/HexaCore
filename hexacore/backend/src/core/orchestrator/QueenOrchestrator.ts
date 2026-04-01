@@ -4,6 +4,9 @@ import { WorkflowEngine } from '../workflow-engine/WorkflowEngine';
 import { MessageBus } from '../message-bus/MessageBus';
 import { ToolRegistry } from '../tool-adapters/ToolRegistry';
 import { KnowledgeBase } from '../knowledge/KnowledgeBase';
+import { ArtifactStore } from '../artifacts/ArtifactStore';
+import { SignalService } from '../signals/SignalService';
+import { AuditTrail } from '../audit/AuditTrail';
 import { QueenAgent } from '../../agents/queen/QueenAgent';
 import { FileAdapter } from '../tool-adapters/adapters/FileAdapter';
 import { SqlAdapter } from '../tool-adapters/adapters/SqlAdapter';
@@ -17,12 +20,18 @@ export class QueenOrchestrator {
   private bus: MessageBus;
   private tools: ToolRegistry;
   private knowledge: KnowledgeBase;
+  private artifactStore: ArtifactStore;
+  private signals: SignalService;
+  private audit: AuditTrail;
   private queen?: QueenAgent;
 
   constructor() {
     this.bus = MessageBus.getInstance();
     this.tools = new ToolRegistry();
     this.knowledge = new KnowledgeBase();
+    this.artifactStore = ArtifactStore.getInstance();
+    this.signals = SignalService.getInstance();
+    this.audit = AuditTrail.getInstance();
     this.registry = new AgentRegistry(this.bus, this.tools, this.knowledge);
     this.engine = new WorkflowEngine(this.registry);
   }
@@ -30,16 +39,13 @@ export class QueenOrchestrator {
   async initialize(): Promise<void> {
     logger.info('Orchestrator', 'Initializing Hexacore...');
 
-    // Register tools
     this.tools.register(new FileAdapter());
     this.tools.register(new SqlAdapter());
     this.tools.register(new BuildAdapter());
 
-    // Load agents from config
     const configDir = path.resolve(__dirname, '../../../../config/agents');
     this.registry.loadFromDirectory(configDir);
 
-    // Wire Queen to engine
     const queenAgent = this.registry.get('queen');
     if (queenAgent instanceof QueenAgent) {
       queenAgent.setEngine(this.engine);
@@ -47,7 +53,7 @@ export class QueenOrchestrator {
     }
 
     logger.info('Orchestrator', 'Hexacore initialized', {
-      agents: this.registry.list().map((a) => a.id),
+      agents: this.registry.list().map(a => a.id),
       tools: this.tools.list(),
     });
   }
@@ -70,7 +76,31 @@ export class QueenOrchestrator {
     return this.registry.list();
   }
 
-  getMessages(task_id?: string) {
-    return this.bus.getMessages(task_id);
+  getMessages(filter?: { task_id?: string; workflowId?: string }) {
+    return this.bus.getMessages(filter);
+  }
+
+  getSignals(workflowId?: string) {
+    return workflowId
+      ? this.signals.getByWorkflow(workflowId)
+      : this.signals.getAll();
+  }
+
+  getAuditTrail(workflowId: string) {
+    return this.audit.getByWorkflow(workflowId);
+  }
+
+  getArtifacts(workflowId?: string) {
+    return workflowId
+      ? this.artifactStore.getByWorkflow(workflowId)
+      : this.artifactStore.getAll();
+  }
+
+  getAgentActivity(agentId: string) {
+    return {
+      agent: this.registry.get(agentId)?.getInfo(),
+      signal: this.signals.get(agentId),
+      messages: this.bus.getByAgent(agentId),
+    };
   }
 }

@@ -17,7 +17,6 @@ export class MessageBus {
   subscribe(agentId: string, handler: Handler): void {
     const existing = this.subscribers.get(agentId) ?? [];
     this.subscribers.set(agentId, [...existing, handler]);
-    logger.debug('MessageBus', `Agent ${agentId} subscribed`);
   }
 
   unsubscribe(agentId: string): void {
@@ -42,21 +41,30 @@ export class MessageBus {
     };
 
     this.messageLog.push(message);
-    logger.info('MessageBus', `${from} → ${to} [${type}]`, { task_id, payload });
+    logger.info('MessageBus', `${from} → ${to} [${type}]`, { task_id });
 
     const handlers = this.subscribers.get(to) ?? [];
-    handlers.forEach((h) => h(message));
+    handlers.forEach(h => h(message));
 
-    // Also deliver to wildcard subscribers (e.g. UI monitor)
+    // Wildcard subscribers (UI monitor, audit hooks)
     const wildcardHandlers = this.subscribers.get('*') ?? [];
-    wildcardHandlers.forEach((h) => h(message));
+    wildcardHandlers.forEach(h => h(message));
 
     return message;
   }
 
-  getMessages(task_id?: string): Message[] {
-    if (!task_id) return [...this.messageLog];
-    return this.messageLog.filter((m) => m.task_id === task_id);
+  getMessages(filter?: { task_id?: string; workflowId?: string; from?: string; to?: string }): Message[] {
+    if (!filter) return [...this.messageLog];
+    return this.messageLog.filter(m => {
+      if (filter.task_id && m.task_id !== filter.task_id) return false;
+      if (filter.from && m.from !== filter.from) return false;
+      if (filter.to && m.to !== filter.to) return false;
+      return true;
+    });
+  }
+
+  getByAgent(agentId: string): Message[] {
+    return this.messageLog.filter(m => m.from === agentId || m.to === agentId);
   }
 
   clear(): void {

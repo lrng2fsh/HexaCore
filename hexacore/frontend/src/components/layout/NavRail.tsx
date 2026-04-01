@@ -1,111 +1,99 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import {
-  Hexagon, Crown, Users, GitBranch, Network, BookOpen,
-  CheckSquare, ScrollText, Settings, Activity
-} from 'lucide-react';
+import { Hexagon, Crown, Users, GitBranch, Network, BookOpen, CheckSquare, ScrollText, Settings, Activity } from 'lucide-react';
 
 export type ViewId = 'overview' | 'queen' | 'workers' | 'flow' | 'system' | 'knowledge' | 'approvals' | 'logs' | 'settings';
 
-interface NavItem {
-  id: ViewId;
-  icon: React.ReactNode;
-  label: string;
-  chamber: string;
-}
-
-const NAV_ITEMS: NavItem[] = [
-  { id: 'overview', icon: <Hexagon size={16} />, label: 'Hive Overview', chamber: 'MAIN CHAMBER' },
-  { id: 'queen', icon: <Crown size={16} />, label: 'Queen Chamber', chamber: 'THRONE ROOM' },
-  { id: 'workers', icon: <Users size={16} />, label: 'Worker Bees', chamber: 'WORKER CELLS' },
-  { id: 'flow', icon: <GitBranch size={16} />, label: 'Honeycomb Flow', chamber: 'TASK GRAPH' },
-  { id: 'system', icon: <Network size={16} />, label: 'System Map', chamber: 'HIVE NETWORK' },
-  { id: 'knowledge', icon: <BookOpen size={16} />, label: 'Knowledge Graph', chamber: 'POLLEN STORE' },
-  { id: 'approvals', icon: <CheckSquare size={16} />, label: 'Approvals', chamber: 'GATE CHAMBER' },
-  { id: 'logs', icon: <ScrollText size={16} />, label: 'Logs', chamber: 'SIGNAL ARCHIVE' },
-  { id: 'settings', icon: <Settings size={16} />, label: 'Settings', chamber: 'HIVE CONFIG' },
+const NAV_ITEMS = [
+  { id: 'overview'  as ViewId, icon: React.createElement(Hexagon,    { size: 15 }), label: 'Hive Overview',   labelJP: '???',   chamber: 'MAIN CHAMBER'   },
+  { id: 'queen'     as ViewId, icon: React.createElement(Crown,      { size: 15 }), label: 'Queen Chamber',   labelJP: '??',     chamber: 'THRONE ROOM'    },
+  { id: 'workers'   as ViewId, icon: React.createElement(Users,      { size: 15 }), label: 'Worker Bees',     labelJP: '???',   chamber: 'WORKER CELLS'   },
+  { id: 'flow'      as ViewId, icon: React.createElement(GitBranch,  { size: 15 }), label: 'Honeycomb Flow',  labelJP: '???',   chamber: 'TASK GRAPH'     },
+  { id: 'system'    as ViewId, icon: React.createElement(Network,    { size: 15 }), label: 'System Map',      labelJP: '????', chamber: 'HIVE NETWORK'   },
+  { id: 'knowledge' as ViewId, icon: React.createElement(BookOpen,   { size: 15 }), label: 'Knowledge Graph', labelJP: '??',     chamber: 'POLLEN STORE'   },
+  { id: 'approvals' as ViewId, icon: React.createElement(CheckSquare,{ size: 15 }), label: 'Approvals',       labelJP: '??',     chamber: 'GATE CHAMBER'   },
+  { id: 'logs'      as ViewId, icon: React.createElement(ScrollText, { size: 15 }), label: 'Logs',            labelJP: '??',     chamber: 'SIGNAL ARCHIVE' },
+  { id: 'settings'  as ViewId, icon: React.createElement(Settings,   { size: 15 }), label: 'Settings',        labelJP: '??',     chamber: 'HIVE CONFIG'    },
 ];
 
 interface NavRailProps {
   activeView: ViewId;
   onNavigate: (view: ViewId) => void;
+  isAnime?: boolean;
 }
 
-export function NavRail({ activeView, onNavigate }: NavRailProps) {
+export function NavRail({ activeView, onNavigate, isAnime = false }: NavRailProps) {
   return (
-    <div className="flex flex-col w-14 h-full border-r border-amber-900/20 bg-hive-bg/80 relative z-40">
-      {/* Top hex logo area */}
-      <div className="flex items-center justify-center h-12 border-b border-amber-900/20">
-        <motion.div
-          className="text-amber-600/40"
-          animate={{ opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 3, repeat: Infinity }}
-        >
-          <Hexagon size={14} />
-        </motion.div>
-      </div>
-
-      {/* Nav items */}
-      <div className="flex flex-col flex-1 py-2 gap-0.5">
-        {NAV_ITEMS.map((item) => {
+    React.createElement('div', {
+      className: 'flex flex-col w-16 h-full relative z-40 flex-shrink-0',
+      style: {
+        background: isAnime ? 'linear-gradient(180deg,#02040a,#050810)' : 'color-mix(in srgb,var(--hive-bg) 80%,transparent)',
+        borderRight: '1px solid color-mix(in srgb,var(--hive-accent) 12%,transparent)',
+      }
+    },
+      React.createElement('div', {
+        className: 'flex items-center justify-center h-12 flex-shrink-0',
+        style: { borderBottom: '1px solid color-mix(in srgb,var(--hive-accent) 10%,transparent)' }
+      },
+        React.createElement(motion.div, {
+          style: { color: 'color-mix(in srgb,var(--hive-accent) 40%,transparent)' },
+          animate: { opacity: [0.3, 0.7, 0.3] },
+          transition: { duration: 2.5, repeat: Infinity }
+        }, React.createElement(Hexagon, { size: 13 }))
+      ),
+      React.createElement('div', { className: 'flex flex-col flex-1 py-2 gap-0.5 overflow-hidden' },
+        NAV_ITEMS.map(item => {
           const isActive = activeView === item.id;
-          return (
-            <div key={item.id} className="relative group">
-              <button
-                onClick={() => onNavigate(item.id)}
-                className={`
-                  relative w-full flex items-center justify-center h-10
-                  transition-all duration-200
-                  ${isActive
-                    ? 'text-amber-300'
-                    : 'text-slate-600 hover:text-slate-300'
-                  }
-                `}
-              >
-                {/* Active indicator */}
-                {isActive && (
-                  <motion.div
-                    layoutId="nav-active"
-                    className="absolute inset-1 rounded"
-                    style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                  />
-                )}
-
-                {/* Active left bar */}
-                {isActive && (
-                  <div className="absolute left-0 top-2 bottom-2 w-0.5 rounded-r bg-amber-500"
-                    style={{ boxShadow: '0 0 6px #f59e0b' }} />
-                )}
-
-                <span className="relative z-10">{item.icon}</span>
-              </button>
-
-              {/* Tooltip */}
-              <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-                <div className="bg-hive-panel border border-amber-900/30 rounded px-2.5 py-1.5 whitespace-nowrap shadow-xl">
-                  <div className="text-xs font-medium text-slate-200">{item.label}</div>
-                  <div className="text-xs font-mono text-amber-700/70 mt-0.5">{item.chamber}</div>
-                </div>
-              </div>
-            </div>
+          return React.createElement('div', { key: item.id, className: 'relative group' },
+            React.createElement('button', {
+              onClick: () => onNavigate(item.id),
+              className: 'relative w-full flex items-center justify-center h-11 transition-all duration-150',
+              style: { color: isActive ? 'var(--hive-accent-text)' : 'color-mix(in srgb,var(--hive-accent) 25%,#4b5563)' }
+            },
+              isActive && React.createElement(motion.div, {
+                layoutId: 'nav-active',
+                className: 'absolute inset-1 rounded-sm',
+                style: { background: 'var(--hive-accent-muted)', border: '1px solid color-mix(in srgb,var(--hive-accent) 25%,transparent)' },
+                transition: { type: 'spring', stiffness: 400, damping: 30 }
+              }),
+              isActive && React.createElement('div', {
+                className: 'absolute left-0 top-2 bottom-2 w-0.5 rounded-r',
+                style: { background: 'var(--hive-accent)', boxShadow: '0 0 6px var(--hive-accent)' }
+              }),
+              React.createElement('span', { className: 'relative z-10' }, item.icon),
+              isAnime && isActive && React.createElement('span', {
+                className: 'absolute bottom-0.5 left-0 right-0 text-center font-jp',
+                style: { fontSize: 7, color: 'var(--hive-accent)', opacity: 0.7 }
+              }, item.labelJP)
+            ),
+            React.createElement('div', {
+              className: 'absolute left-full top-1/2 -translate-y-1/2 ml-2 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity'
+            },
+              React.createElement('div', {
+                className: 'rounded px-2.5 py-1.5 whitespace-nowrap shadow-xl',
+                style: { background: 'var(--hive-panel)', border: '1px solid color-mix(in srgb,var(--hive-accent) 25%,transparent)' }
+              },
+                React.createElement('div', { className: 'font-rajdhani text-xs font-semibold', style: { color: 'var(--hive-accent-text)' } }, isAnime ? item.labelJP : item.label),
+                React.createElement('div', { className: 'font-mono-tech mt-0.5', style: { fontSize: 9, color: 'color-mix(in srgb,var(--hive-accent) 40%,transparent)' } }, item.chamber)
+              )
+            )
           );
-        })}
-      </div>
-
-      {/* Bottom activity */}
-      <div className="flex items-center justify-center h-10 border-t border-amber-900/20">
-        <motion.div
-          className="text-amber-600/50"
-          animate={{ opacity: [0.3, 0.8, 0.3] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <Activity size={12} />
-        </motion.div>
-      </div>
-
-      {/* Right glow line */}
-      <div className="absolute right-0 top-12 bottom-0 w-px bg-gradient-to-b from-transparent via-amber-600/10 to-transparent" />
-    </div>
+        })
+      ),
+      React.createElement('div', {
+        className: 'flex items-center justify-center h-11 flex-shrink-0',
+        style: { borderTop: '1px solid color-mix(in srgb,var(--hive-accent) 10%,transparent)' }
+      },
+        React.createElement(motion.div, {
+          style: { color: 'color-mix(in srgb,var(--hive-accent) 40%,transparent)' },
+          animate: { opacity: [0.3, 0.9, 0.3] },
+          transition: { duration: 1.8, repeat: Infinity }
+        }, React.createElement(Activity, { size: 11 }))
+      ),
+      React.createElement('div', {
+        className: 'absolute right-0 top-12 bottom-10 w-px',
+        style: { background: 'linear-gradient(to bottom,transparent,color-mix(in srgb,var(--hive-accent) 15%,transparent),transparent)' }
+      })
+    )
   );
 }

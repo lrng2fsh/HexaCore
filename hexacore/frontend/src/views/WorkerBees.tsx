@@ -12,25 +12,29 @@ const AGENT_ICONS: Record<string, React.ReactNode> = {
 };
 
 const STATUS_CONFIG: Record<string, { color: string; label: string; bg: string }> = {
-  idle: { color: '#6b7280', label: 'IDLE', bg: 'rgba(55,65,81,0.15)' },
-  busy: { color: '#f59e0b', label: 'ACTIVE', bg: 'rgba(245,158,11,0.1)' },
-  done: { color: '#10b981', label: 'DONE', bg: 'rgba(16,185,129,0.1)' },
-  error: { color: '#ef4444', label: 'ERROR', bg: 'rgba(239,68,68,0.1)' },
+  idle: { color: '#94a3b8', label: 'IDLE', bg: 'rgba(148,163,184,0.1)' },
+  busy: { color: '#fbbf24', label: 'ACTIVE', bg: 'rgba(251,191,36,0.1)' },
+  done: { color: '#34d399', label: 'DONE', bg: 'rgba(52,211,153,0.1)' },
+  error: { color: '#f87171', label: 'ERROR', bg: 'rgba(248,113,113,0.1)' },
   offline: { color: '#374151', label: 'OFFLINE', bg: 'rgba(31,41,55,0.1)' },
-  thinking: { color: '#8b5cf6', label: 'THINKING', bg: 'rgba(139,92,246,0.1)' },
+  thinking: { color: '#a78bfa', label: 'THINKING', bg: 'rgba(167,139,250,0.1)' },
 };
 
 interface WorkerBeesProps {
   onSelectAgent: (agent: Agent) => void;
   selectedAgent: Agent | null;
+  isAnime?: boolean;
 }
 
-export function WorkerBees({ onSelectAgent, selectedAgent }: WorkerBeesProps) {
+export function WorkerBees({ onSelectAgent, selectedAgent, isAnime = false }: WorkerBeesProps) {
   const workers = MOCK_AGENTS.filter(a => !a.isQueen);
 
   return (
     <div className="h-full overflow-y-auto p-6">
-      <div className="text-xs font-mono text-amber-700/50 tracking-widest mb-6">WORKER BEES — SPECIALIST CELLS</div>
+      <div className={`text-xs tracking-widest mb-6 ${isAnime ? 'font-mono-tech' : 'font-mono'}`}
+        style={{ color: 'color-mix(in srgb, var(--hive-accent) 40%, transparent)' }}>
+        {isAnime ? '働き蜂 / WORKER BEES' : 'WORKER BEES — SPECIALIST CELLS'}
+      </div>
 
       <div className="grid grid-cols-2 gap-4">
         {workers.map((agent, i) => (
@@ -40,6 +44,7 @@ export function WorkerBees({ onSelectAgent, selectedAgent }: WorkerBeesProps) {
             index={i}
             isSelected={selectedAgent?.id === agent.id}
             onClick={() => onSelectAgent(agent)}
+            isAnime={isAnime}
           />
         ))}
       </div>
@@ -47,8 +52,8 @@ export function WorkerBees({ onSelectAgent, selectedAgent }: WorkerBeesProps) {
   );
 }
 
-function WorkerBeeCard({ agent, index, isSelected, onClick }: {
-  agent: Agent; index: number; isSelected: boolean; onClick: () => void;
+function WorkerBeeCard({ agent, index, isSelected, onClick, isAnime = false }: {
+  agent: Agent; index: number; isSelected: boolean; onClick: () => void; isAnime?: boolean;
 }) {
   const cfg = STATUS_CONFIG[agent.status] ?? STATUS_CONFIG.idle;
 
@@ -58,14 +63,22 @@ function WorkerBeeCard({ agent, index, isSelected, onClick }: {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08 }}
       onClick={onClick}
-      className="relative rounded-lg border cursor-pointer overflow-hidden transition-all duration-200"
+      className="relative rounded cursor-pointer overflow-hidden transition-all duration-200"
       style={{
-        borderColor: isSelected ? `${cfg.color}60` : 'rgba(30,30,46,0.8)',
-        background: isSelected ? cfg.bg : 'rgba(17,17,24,0.8)',
+        borderColor: isSelected ? `${cfg.color}60` : isAnime ? 'rgba(0,255,240,0.1)' : 'rgba(30,30,46,0.8)',
+        border: `1px solid ${isSelected ? `${cfg.color}60` : isAnime ? 'rgba(0,255,240,0.1)' : 'rgba(30,30,46,0.8)'}`,
+        background: isSelected ? cfg.bg : isAnime ? 'rgba(5,8,16,0.9)' : 'rgba(17,17,24,0.8)',
         boxShadow: isSelected ? `0 0 20px ${cfg.color}22` : 'none',
       }}
-      whileHover={{ scale: 1.01, borderColor: `${cfg.color}40` }}
+      whileHover={{ scale: 1.01 }}
     >
+      {/* Anime corner brackets */}
+      {isAnime && (
+        <>
+          <div className="absolute top-0 left-0 w-3 h-3 border-t border-l" style={{ borderColor: 'var(--hive-accent)', opacity: 0.6 }} />
+          <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r" style={{ borderColor: 'var(--hive-accent)', opacity: 0.6 }} />
+        </>
+      )}
       {/* Hex accent top-right */}
       <div className="absolute top-0 right-0 w-16 h-16 opacity-5"
         style={{ background: `radial-gradient(circle at top right, ${cfg.color}, transparent)` }} />
@@ -89,30 +102,30 @@ function WorkerBeeCard({ agent, index, isSelected, onClick }: {
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-semibold text-slate-100">{agent.name}</span>
+              <span className="font-semibold" style={{ color: '#f0f0f5', fontWeight: 700, fontSize: 15 }}>{agent.name}</span>
               <span className="text-xs font-mono px-1.5 py-0.5 rounded"
                 style={{ background: cfg.bg, color: cfg.color }}>{cfg.label}</span>
             </div>
-            <div className="text-xs text-slate-500 truncate mt-0.5">{agent.role}</div>
+            <div className="text-xs truncate mt-0.5" style={{ color: '#94a3b8' }}>{agent.role}</div>
           </div>
         </div>
 
         {/* Current task */}
         {agent.currentTask ? (
-          <div className="text-xs text-slate-400 bg-slate-900/60 rounded p-2 mb-3 border border-slate-800/50 leading-relaxed">
+          <div className="text-xs rounded p-2 mb-3 border leading-relaxed" style={{ color: '#d1d5db', background: 'rgba(255,255,255,0.04)', borderColor: 'rgba(255,255,255,0.08)' }}>
             {agent.currentTask}
           </div>
         ) : (
-          <div className="text-xs text-slate-700 bg-slate-900/30 rounded p-2 mb-3 border border-slate-800/30">
+          <div className="text-xs rounded p-2 mb-3 border" style={{ color: '#6b7280', background: 'rgba(255,255,255,0.02)', borderColor: 'rgba(255,255,255,0.05)' }}>
             Awaiting assignment
           </div>
         )}
 
         {/* Model + tools */}
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-xs font-mono text-slate-600 bg-slate-800/50 px-2 py-0.5 rounded">{agent.model}</span>
+          <span className="text-xs font-mono px-2 py-0.5 rounded" style={{ color: '#b8bdd0', background: 'rgba(255,255,255,0.06)' }}>{agent.model}</span>
           {agent.tools.map(t => (
-            <span key={t} className="text-xs font-mono text-amber-700/70 bg-amber-900/10 px-1.5 py-0.5 rounded border border-amber-900/20">
+            <span key={t} className="text-xs font-mono px-1.5 py-0.5 rounded border" style={{ color: '#fbbf24', background: 'rgba(251,191,36,0.08)', borderColor: 'rgba(251,191,36,0.2)' }}>
               {t}
             </span>
           ))}
@@ -131,19 +144,19 @@ function WorkerBeeCard({ agent, index, isSelected, onClick }: {
         </div>
 
         {/* Stats */}
-        <div className="flex items-center gap-3 pt-2 border-t border-slate-800/50">
-          <div className="flex items-center gap-1 text-xs text-slate-600">
+        <div className="flex items-center gap-3 pt-2 border-t" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
+          <div className="flex items-center gap-1 text-xs" style={{ color: '#94a3b8' }}>
             <MessageSquare size={10} />
             <span>{agent.messagesCount}</span>
           </div>
-          <div className="flex items-center gap-1 text-xs text-slate-600">
+          <div className="flex items-center gap-1 text-xs" style={{ color: '#94a3b8' }}>
             <Package size={10} />
             <span>{agent.outputCount}</span>
           </div>
           <div className="flex-1" />
           <div className="flex flex-wrap gap-1">
             {agent.skills.slice(0, 2).map(s => (
-              <span key={s} className="text-xs text-amber-700/50 bg-amber-900/10 px-1.5 py-0.5 rounded" style={{ fontSize: 9 }}>
+              <span key={s} className="px-1.5 py-0.5 rounded" style={{ fontSize: 9, color: '#b8bdd0', background: 'rgba(255,255,255,0.06)' }}>
                 {s}
               </span>
             ))}

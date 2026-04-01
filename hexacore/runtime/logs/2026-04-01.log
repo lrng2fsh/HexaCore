@@ -114,3 +114,134 @@
 {"timestamp":"2026-04-01T15:59:23.228Z","level":"INFO","context":"AgentRegistry","message":"Loaded 5 agents from E:\\Dev\\HexaCore\\hexacore\\config\\agents"}
 {"timestamp":"2026-04-01T15:59:23.229Z","level":"INFO","context":"Orchestrator","message":"Hexacore initialized","data":{"agents":["app-agent","build-agent","dba-agent","qa-agent","queen"],"tools":["file","sql","build"]}}
 {"timestamp":"2026-04-01T15:59:23.232Z","level":"INFO","context":"API","message":"Hexacore backend running on http://localhost:3001"}
+{"timestamp":"2026-04-01T16:17:20.491Z","level":"INFO","context":"Orchestrator","message":"Initializing Hexacore..."}
+{"timestamp":"2026-04-01T16:17:20.495Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: file"}
+{"timestamp":"2026-04-01T16:17:20.495Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: sql"}
+{"timestamp":"2026-04-01T16:17:20.496Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: build"}
+{"timestamp":"2026-04-01T16:17:20.525Z","level":"INFO","context":"app-agent","message":"Agent initialized — role: Application Engineer"}
+{"timestamp":"2026-04-01T16:17:20.525Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: app-agent"}
+{"timestamp":"2026-04-01T16:17:20.547Z","level":"INFO","context":"build-agent","message":"Agent initialized — role: Build Engineer"}
+{"timestamp":"2026-04-01T16:17:20.548Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: build-agent"}
+{"timestamp":"2026-04-01T16:17:20.568Z","level":"INFO","context":"dba-agent","message":"Agent initialized — role: Database Administrator"}
+{"timestamp":"2026-04-01T16:17:20.569Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: dba-agent"}
+{"timestamp":"2026-04-01T16:17:20.591Z","level":"INFO","context":"qa-agent","message":"Agent initialized — role: QA Engineer"}
+{"timestamp":"2026-04-01T16:17:20.592Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: qa-agent"}
+{"timestamp":"2026-04-01T16:17:20.621Z","level":"INFO","context":"queen","message":"Agent initialized — role: Queen Orchestrator"}
+{"timestamp":"2026-04-01T16:17:20.621Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: queen"}
+{"timestamp":"2026-04-01T16:17:20.622Z","level":"INFO","context":"AgentRegistry","message":"Loaded 5 agents from E:\\Dev\\HexaCore\\hexacore\\config\\agents"}
+{"timestamp":"2026-04-01T16:17:20.622Z","level":"INFO","context":"Orchestrator","message":"Hexacore initialized","data":{"agents":["app-agent","build-agent","dba-agent","qa-agent","queen"],"tools":["file","sql","build"]}}
+{"timestamp":"2026-04-01T16:17:20.625Z","level":"INFO","context":"API","message":"Hexacore backend running on http://localhost:3001"}
+{"timestamp":"2026-04-01T16:17:33.313Z","level":"INFO","context":"Orchestrator","message":"Initializing Hexacore..."}
+{"timestamp":"2026-04-01T16:17:33.315Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: file"}
+{"timestamp":"2026-04-01T16:17:33.315Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: sql"}
+{"timestamp":"2026-04-01T16:17:33.316Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: build"}
+{"timestamp":"2026-04-01T16:17:33.316Z","level":"INFO","context":"app-agent","message":"Agent initialized — role: Application Engineer"}
+{"timestamp":"2026-04-01T16:17:33.317Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: app-agent"}
+{"timestamp":"2026-04-01T16:17:33.317Z","level":"INFO","context":"build-agent","message":"Agent initialized — role: Build Engineer"}
+{"timestamp":"2026-04-01T16:17:33.318Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: build-agent"}
+{"timestamp":"2026-04-01T16:17:33.318Z","level":"INFO","context":"dba-agent","message":"Agent initialized — role: Database Administrator"}
+{"timestamp":"2026-04-01T16:17:33.318Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: dba-agent"}
+{"timestamp":"2026-04-01T16:17:33.319Z","level":"INFO","context":"qa-agent","message":"Agent initialized — role: QA Engineer"}
+{"timestamp":"2026-04-01T16:17:33.319Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: qa-agent"}
+{"timestamp":"2026-04-01T16:17:33.319Z","level":"INFO","context":"queen","message":"Agent initialized — role: Queen Orchestrator"}
+{"timestamp":"2026-04-01T16:17:33.320Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: queen"}
+{"timestamp":"2026-04-01T16:17:33.320Z","level":"INFO","context":"AgentRegistry","message":"Loaded 5 agents from E:\\Dev\\HexaCore\\hexacore\\config\\agents"}
+{"timestamp":"2026-04-01T16:17:33.321Z","level":"INFO","context":"Orchestrator","message":"Hexacore initialized","data":{"agents":["app-agent","build-agent","dba-agent","qa-agent","queen"],"tools":["file","sql","build"]}}
+{"timestamp":"2026-04-01T16:17:33.325Z","level":"INFO","context":"API","message":"Hexacore backend running on http://localhost:3001"}
+{"timestamp":"2026-04-01T16:18:03.726Z","level":"INFO","context":"Orchestrator","message":"Initializing Hexacore..."}
+{"timestamp":"2026-04-01T16:18:03.730Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: file"}
+{"timestamp":"2026-04-01T16:18:03.730Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: sql"}
+{"timestamp":"2026-04-01T16:18:03.731Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: build"}
+{"timestamp":"2026-04-01T16:18:03.732Z","level":"INFO","context":"app-agent","message":"Agent initialized — role: Application Engineer"}
+{"timestamp":"2026-04-01T16:18:03.732Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: app-agent"}
+{"timestamp":"2026-04-01T16:18:03.733Z","level":"INFO","context":"build-agent","message":"Agent initialized — role: Build Engineer"}
+{"timestamp":"2026-04-01T16:18:03.733Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: build-agent"}
+{"timestamp":"2026-04-01T16:18:03.734Z","level":"INFO","context":"dba-agent","message":"Agent initialized — role: Database Administrator"}
+{"timestamp":"2026-04-01T16:18:03.734Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: dba-agent"}
+{"timestamp":"2026-04-01T16:18:03.735Z","level":"INFO","context":"qa-agent","message":"Agent initialized — role: QA Engineer"}
+{"timestamp":"2026-04-01T16:18:03.735Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: qa-agent"}
+{"timestamp":"2026-04-01T16:18:03.736Z","level":"INFO","context":"queen","message":"Agent initialized — role: Queen Orchestrator"}
+{"timestamp":"2026-04-01T16:18:03.736Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: queen"}
+{"timestamp":"2026-04-01T16:18:03.736Z","level":"INFO","context":"AgentRegistry","message":"Loaded 5 agents from E:\\Dev\\HexaCore\\hexacore\\config\\agents"}
+{"timestamp":"2026-04-01T16:18:03.737Z","level":"INFO","context":"Orchestrator","message":"Hexacore initialized","data":{"agents":["app-agent","build-agent","dba-agent","qa-agent","queen"],"tools":["file","sql","build"]}}
+{"timestamp":"2026-04-01T16:18:03.739Z","level":"INFO","context":"API","message":"Hexacore backend running on http://localhost:3001"}
+{"timestamp":"2026-04-01T16:18:25.823Z","level":"INFO","context":"Orchestrator","message":"Initializing Hexacore..."}
+{"timestamp":"2026-04-01T16:18:25.827Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: file"}
+{"timestamp":"2026-04-01T16:18:25.827Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: sql"}
+{"timestamp":"2026-04-01T16:18:25.827Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: build"}
+{"timestamp":"2026-04-01T16:18:25.828Z","level":"INFO","context":"app-agent","message":"Agent initialized — role: Application Engineer"}
+{"timestamp":"2026-04-01T16:18:25.829Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: app-agent"}
+{"timestamp":"2026-04-01T16:18:25.829Z","level":"INFO","context":"build-agent","message":"Agent initialized — role: Build Engineer"}
+{"timestamp":"2026-04-01T16:18:25.830Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: build-agent"}
+{"timestamp":"2026-04-01T16:18:25.830Z","level":"INFO","context":"dba-agent","message":"Agent initialized — role: Database Administrator"}
+{"timestamp":"2026-04-01T16:18:25.831Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: dba-agent"}
+{"timestamp":"2026-04-01T16:18:25.831Z","level":"INFO","context":"qa-agent","message":"Agent initialized — role: QA Engineer"}
+{"timestamp":"2026-04-01T16:18:25.831Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: qa-agent"}
+{"timestamp":"2026-04-01T16:18:25.832Z","level":"INFO","context":"queen","message":"Agent initialized — role: Queen Orchestrator"}
+{"timestamp":"2026-04-01T16:18:25.832Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: queen"}
+{"timestamp":"2026-04-01T16:18:25.832Z","level":"INFO","context":"AgentRegistry","message":"Loaded 5 agents from E:\\Dev\\HexaCore\\hexacore\\config\\agents"}
+{"timestamp":"2026-04-01T16:18:25.833Z","level":"INFO","context":"Orchestrator","message":"Hexacore initialized","data":{"agents":["app-agent","build-agent","dba-agent","qa-agent","queen"],"tools":["file","sql","build"]}}
+{"timestamp":"2026-04-01T16:18:25.835Z","level":"INFO","context":"API","message":"Hexacore backend running on http://localhost:3001"}
+{"timestamp":"2026-04-01T16:21:02.414Z","level":"INFO","context":"Orchestrator","message":"Initializing Hexacore..."}
+{"timestamp":"2026-04-01T16:21:02.416Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: file"}
+{"timestamp":"2026-04-01T16:21:02.416Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: sql"}
+{"timestamp":"2026-04-01T16:21:02.417Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: build"}
+{"timestamp":"2026-04-01T16:21:02.418Z","level":"INFO","context":"app-agent","message":"Agent initialized — role: Application Engineer"}
+{"timestamp":"2026-04-01T16:21:02.418Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: app-agent"}
+{"timestamp":"2026-04-01T16:21:02.419Z","level":"INFO","context":"build-agent","message":"Agent initialized — role: Build Engineer"}
+{"timestamp":"2026-04-01T16:21:02.419Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: build-agent"}
+{"timestamp":"2026-04-01T16:21:02.420Z","level":"ERROR","context":"API","message":"Failed to initialize","data":{}}
+{"timestamp":"2026-04-01T16:21:48.442Z","level":"INFO","context":"Orchestrator","message":"Initializing Hexacore..."}
+{"timestamp":"2026-04-01T16:21:48.444Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: file"}
+{"timestamp":"2026-04-01T16:21:48.444Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: sql"}
+{"timestamp":"2026-04-01T16:21:48.445Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: build"}
+{"timestamp":"2026-04-01T16:21:48.446Z","level":"INFO","context":"app-agent","message":"Agent initialized — role: Application Engineer"}
+{"timestamp":"2026-04-01T16:21:48.446Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: app-agent"}
+{"timestamp":"2026-04-01T16:21:48.447Z","level":"INFO","context":"build-agent","message":"Agent initialized — role: Build Engineer"}
+{"timestamp":"2026-04-01T16:21:48.447Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: build-agent"}
+{"timestamp":"2026-04-01T16:21:48.448Z","level":"ERROR","context":"API","message":"Failed to initialize","data":{}}
+{"timestamp":"2026-04-01T16:22:10.531Z","level":"INFO","context":"Orchestrator","message":"Initializing Hexacore..."}
+{"timestamp":"2026-04-01T16:22:10.533Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: file"}
+{"timestamp":"2026-04-01T16:22:10.533Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: sql"}
+{"timestamp":"2026-04-01T16:22:10.534Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: build"}
+{"timestamp":"2026-04-01T16:22:10.535Z","level":"INFO","context":"app-agent","message":"Agent initialized — role: Application Engineer"}
+{"timestamp":"2026-04-01T16:22:10.535Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: app-agent"}
+{"timestamp":"2026-04-01T16:22:10.535Z","level":"INFO","context":"build-agent","message":"Agent initialized — role: Build Engineer"}
+{"timestamp":"2026-04-01T16:22:10.536Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: build-agent"}
+{"timestamp":"2026-04-01T16:22:10.537Z","level":"ERROR","context":"API","message":"Failed to initialize","data":{}}
+{"timestamp":"2026-04-01T16:22:38.845Z","level":"INFO","context":"Orchestrator","message":"Initializing Hexacore..."}
+{"timestamp":"2026-04-01T16:22:38.847Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: file"}
+{"timestamp":"2026-04-01T16:22:38.847Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: sql"}
+{"timestamp":"2026-04-01T16:22:38.847Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: build"}
+{"timestamp":"2026-04-01T16:22:38.848Z","level":"INFO","context":"app-agent","message":"Agent initialized — role: Application Engineer"}
+{"timestamp":"2026-04-01T16:22:38.849Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: app-agent"}
+{"timestamp":"2026-04-01T16:22:38.849Z","level":"INFO","context":"build-agent","message":"Agent initialized — role: Build Engineer"}
+{"timestamp":"2026-04-01T16:22:38.850Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: build-agent"}
+{"timestamp":"2026-04-01T16:22:38.850Z","level":"ERROR","context":"API","message":"Failed to initialize","data":{}}
+{"timestamp":"2026-04-01T16:22:53.930Z","level":"INFO","context":"Orchestrator","message":"Initializing Hexacore..."}
+{"timestamp":"2026-04-01T16:22:53.933Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: file"}
+{"timestamp":"2026-04-01T16:22:53.933Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: sql"}
+{"timestamp":"2026-04-01T16:22:53.933Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: build"}
+{"timestamp":"2026-04-01T16:22:53.934Z","level":"INFO","context":"app-agent","message":"Agent initialized — role: Application Engineer"}
+{"timestamp":"2026-04-01T16:22:53.935Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: app-agent"}
+{"timestamp":"2026-04-01T16:22:53.935Z","level":"INFO","context":"build-agent","message":"Agent initialized — role: Build Engineer"}
+{"timestamp":"2026-04-01T16:22:53.935Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: build-agent"}
+{"timestamp":"2026-04-01T16:22:53.936Z","level":"ERROR","context":"API","message":"Failed to initialize","data":{}}
+{"timestamp":"2026-04-01T16:23:07.187Z","level":"INFO","context":"Orchestrator","message":"Initializing Hexacore..."}
+{"timestamp":"2026-04-01T16:23:07.189Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: file"}
+{"timestamp":"2026-04-01T16:23:07.190Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: sql"}
+{"timestamp":"2026-04-01T16:23:07.190Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: build"}
+{"timestamp":"2026-04-01T16:23:07.191Z","level":"INFO","context":"app-agent","message":"Agent initialized — role: Application Engineer"}
+{"timestamp":"2026-04-01T16:23:07.191Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: app-agent"}
+{"timestamp":"2026-04-01T16:23:07.192Z","level":"INFO","context":"build-agent","message":"Agent initialized — role: Build Engineer"}
+{"timestamp":"2026-04-01T16:23:07.192Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: build-agent"}
+{"timestamp":"2026-04-01T16:23:07.193Z","level":"ERROR","context":"API","message":"Failed to initialize","data":{}}
+{"timestamp":"2026-04-01T16:57:50.119Z","level":"INFO","context":"Orchestrator","message":"Initializing Hexacore..."}
+{"timestamp":"2026-04-01T16:57:50.125Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: file"}
+{"timestamp":"2026-04-01T16:57:50.126Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: sql"}
+{"timestamp":"2026-04-01T16:57:50.128Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: build"}
+{"timestamp":"2026-04-01T16:57:50.159Z","level":"INFO","context":"app-agent","message":"Agent initialized — role: Application Engineer"}
+{"timestamp":"2026-04-01T16:57:50.161Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: app-agent"}
+{"timestamp":"2026-04-01T16:57:50.184Z","level":"INFO","context":"build-agent","message":"Agent initialized — role: Build Engineer"}
+{"timestamp":"2026-04-01T16:57:50.185Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: build-agent"}
+{"timestamp":"2026-04-01T16:57:50.219Z","level":"ERROR","context":"API","message":"Failed to initialize","data":{}}

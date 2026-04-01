@@ -18,26 +18,26 @@ const STATUS_GLOW: Record<string, string> = {
   busy: '#f59e0b',
   running: '#f59e0b',
   done: '#10b981',
-  idle: '#374151',
-  pending: '#374151',
+  idle: '#a0a8c0',
+  pending: '#a0a8c0',
   blocked: '#ef4444',
   failed: '#ef4444',
   error: '#ef4444',
   thinking: '#8b5cf6',
-  offline: '#1f2937',
+  offline: '#475569',
 };
 
 const STATUS_BORDER: Record<string, string> = {
-  busy: 'rgba(245,158,11,0.7)',
-  running: 'rgba(245,158,11,0.7)',
-  done: 'rgba(16,185,129,0.6)',
-  idle: 'rgba(55,65,81,0.5)',
-  pending: 'rgba(55,65,81,0.4)',
-  blocked: 'rgba(239,68,68,0.6)',
-  failed: 'rgba(239,68,68,0.6)',
-  error: 'rgba(239,68,68,0.6)',
-  thinking: 'rgba(139,92,246,0.6)',
-  offline: 'rgba(31,41,55,0.4)',
+  busy: 'rgba(245,158,11,0.95)',
+  running: 'rgba(245,158,11,0.95)',
+  done: 'rgba(16,185,129,0.85)',
+  idle: 'rgba(200,205,225,0.5)',
+  pending: 'rgba(200,205,225,0.4)',
+  blocked: 'rgba(239,68,68,0.85)',
+  failed: 'rgba(239,68,68,0.85)',
+  error: 'rgba(239,68,68,0.85)',
+  thinking: 'rgba(139,92,246,0.85)',
+  offline: 'rgba(100,110,130,0.35)',
 };
 
 export function HexCell({
@@ -54,6 +54,10 @@ export function HexCell({
   const border = STATUS_BORDER[status] ?? 'rgba(55,65,81,0.5)';
   const isAnimated = animate && (status === 'busy' || status === 'running' || status === 'thinking');
 
+  // Worker cells: significantly lighter than page bg
+  const workerBg = 'linear-gradient(145deg, #3e3c4e 0%, #32303f 100%)';
+  const queenBg  = 'linear-gradient(145deg, #3d2800 0%, #4a3200 100%)';
+
   const hexStyle: React.CSSProperties = {
     width: size,
     height: size * 1.1547,
@@ -66,9 +70,7 @@ export function HexCell({
     width: '100%',
     height: '100%',
     clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-    background: isQueen
-      ? 'linear-gradient(135deg, #1a1208 0%, #2d1f00 50%, #1a1208 100%)'
-      : 'linear-gradient(135deg, #111118 0%, #16161f 100%)',
+    background: isQueen ? queenBg : workerBg,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -85,22 +87,33 @@ export function HexCell({
       whileTap={onClick ? { scale: 0.97 } : {}}
       animate={isAnimated ? {
         filter: [
-          `drop-shadow(0 0 8px ${glow}44) drop-shadow(0 0 20px ${glow}22)`,
-          `drop-shadow(0 0 16px ${glow}88) drop-shadow(0 0 40px ${glow}44)`,
-          `drop-shadow(0 0 8px ${glow}44) drop-shadow(0 0 20px ${glow}22)`,
+          `drop-shadow(0 0 10px ${glow}77) drop-shadow(0 0 24px ${glow}44)`,
+          `drop-shadow(0 0 22px ${glow}cc) drop-shadow(0 0 50px ${glow}66)`,
+          `drop-shadow(0 0 10px ${glow}77) drop-shadow(0 0 24px ${glow}44)`,
         ],
       } : {
-        filter: `drop-shadow(0 0 6px ${glow}33) drop-shadow(0 0 16px ${glow}11)`,
+        filter: status === 'idle' || status === 'pending'
+          ? `drop-shadow(0 0 12px rgba(180,185,210,0.4))`
+          : `drop-shadow(0 0 10px ${glow}66) drop-shadow(0 0 22px ${glow}33)`,
       }}
       transition={isAnimated ? { duration: 2, repeat: Infinity, ease: 'easeInOut' } : { duration: 0.3 }}
     >
-      {/* Border layer */}
+      {/* Border layer — full perimeter outline */}
       <div style={{
         position: 'absolute',
         inset: 0,
         clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-        background: `linear-gradient(135deg, ${border}, transparent 60%)`,
-        padding: '1.5px',
+        background: `linear-gradient(135deg, ${border}, ${border.replace(/[\d.]+\)$/, '0.2)')} 60%, transparent)`,
+        padding: '2px',
+      }} />
+
+      {/* Bright top-left edge highlight */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+        background: 'linear-gradient(145deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 40%, transparent 65%)',
+        pointerEvents: 'none',
       }} />
 
       {/* Inner content */}

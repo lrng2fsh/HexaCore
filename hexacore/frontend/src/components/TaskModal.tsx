@@ -7,9 +7,10 @@ interface TaskModalProps {
   onClose: () => void;
   onSubmit: (title: string, description: string) => void;
   loading: boolean;
+  isAnime?: boolean;
 }
 
-export function TaskModal({ open, onClose, onSubmit, loading }: TaskModalProps) {
+export function TaskModal({ open, onClose, onSubmit, loading, isAnime = false }: TaskModalProps) {
   const [title, setTitle] = useState('Fix export failure in QA');
   const [description, setDescription] = useState(
     'The export feature is failing with a null reference error when processing orders with empty items.'
@@ -30,22 +31,42 @@ export function TaskModal({ open, onClose, onSubmit, loading }: TaskModalProps) 
             onClick={onClose}
           />
           <motion.div
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md"
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="fixed z-50"
+            style={{ top: '50%', left: '50%', width: '100%', maxWidth: '28rem', x: '-50%', y: '-50%' }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
           >
-            <div className="rounded-xl border border-amber-600/30 overflow-hidden"
-              style={{ background: 'linear-gradient(135deg, #111118 0%, #16161f 100%)', boxShadow: '0 0 40px rgba(245,158,11,0.15)' }}>
+            <div className="rounded overflow-hidden"
+              style={{
+                background: isAnime ? 'linear-gradient(135deg, #02040a, #050810)' : 'linear-gradient(135deg, #111118 0%, #16161f 100%)',
+                border: `1px solid ${isAnime ? 'rgba(0,255,240,0.3)' : 'rgba(245,158,11,0.3)'}`,
+                boxShadow: `0 0 40px color-mix(in srgb, var(--hive-accent) 15%, transparent)`,
+              }}>
+              {/* Anime corner brackets */}
+              {isAnime && (
+                <>
+                  <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2" style={{ borderColor: 'var(--hive-accent)' }} />
+                  <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2" style={{ borderColor: 'var(--hive-accent)' }} />
+                  <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2" style={{ borderColor: 'var(--hive-accent)' }} />
+                  <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2" style={{ borderColor: 'var(--hive-accent)' }} />
+                </>
+              )}
               {/* Header */}
-              <div className="flex items-center gap-3 px-5 py-4 border-b border-amber-900/20">
-                <Hexagon size={16} className="text-amber-500" />
+              <div className="flex items-center gap-3 px-5 py-4"
+                style={{ borderBottom: `1px solid color-mix(in srgb, var(--hive-accent) 15%, transparent)` }}>
+                <Hexagon size={16} style={{ color: 'var(--hive-accent)' }} />
                 <div>
-                  <div className="text-sm font-semibold text-slate-100">New Task</div>
-                  <div className="text-xs text-slate-500">Queen will build and execute the workflow</div>
+                  <div className={`text-sm font-semibold ${isAnime ? 'font-orbitron' : ''}`}
+                    style={{ color: isAnime ? 'var(--hive-accent-text)' : '#f1f5f9' }}>
+                    {isAnime ? '新タスク / NEW TASK' : 'New Task'}
+                  </div>
+                  <div className="text-xs font-mono-tech" style={{ color: '#4b5563' }}>
+                    {isAnime ? '女王がワークフローを構築します' : 'Queen will build and execute the workflow'}
+                  </div>
                 </div>
-                <button onClick={onClose} className="ml-auto text-slate-600 hover:text-slate-300 transition-colors">
+                <button onClick={onClose} className="ml-auto transition-colors" style={{ color: '#4b5563' }}>
                   <X size={16} />
                 </button>
               </div>

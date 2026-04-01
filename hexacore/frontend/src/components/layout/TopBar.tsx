@@ -1,124 +1,195 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Hexagon, Play, Pause, Square, Plus, Activity, ChevronDown } from 'lucide-react';
+import { Play, Pause, Square, Plus, ChevronDown, Palette, Hexagon } from 'lucide-react';
+import { ThemePicker } from '../ThemePicker';
+import { Theme } from '../../lib/themes';
 
 interface TopBarProps {
   onNewTask: () => void;
   isRunning: boolean;
+  currentTheme: Theme;
+  onThemeChange: (theme: Theme) => void;
 }
 
-export function TopBar({ onNewTask, isRunning }: TopBarProps) {
-  const [showEnv, setShowEnv] = useState(false);
+export function TopBar({ onNewTask, isRunning, currentTheme, onThemeChange }: TopBarProps) {
+  const [showThemes, setShowThemes] = useState(false);
+  const isAnime = currentTheme.id === 'anime';
 
   return (
-    <div className="flex items-center h-12 px-4 gap-4 border-b border-amber-900/20 bg-hive-bg/95 backdrop-blur-sm relative z-50">
+    <div
+      className="flex items-center h-14 px-5 gap-3 relative z-50 flex-shrink-0"
+      style={{
+        background: isAnime
+          ? 'linear-gradient(90deg, #02040a 0%, #050810 40%, #02040a 100%)'
+          : 'color-mix(in srgb, var(--hive-bg) 95%, transparent)',
+        borderBottom: `1px solid ${isAnime ? 'rgba(0,255,240,0.2)' : 'color-mix(in srgb, var(--hive-accent) 15%, transparent)'}`,
+        backdropFilter: 'blur(12px)',
+      }}
+    >
       {/* Logo */}
-      <div className="flex items-center gap-2.5 mr-2">
+      <div className="flex items-center gap-2 mr-1">
         <motion.div
           animate={{ rotate: [0, 360] }}
           transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-          className="text-amber-400"
+          style={{ color: 'var(--hive-accent)' }}
         >
-          <Hexagon size={20} fill="rgba(245,158,11,0.15)" strokeWidth={1.5} />
+          <Hexagon size={18} strokeWidth={1.5} />
         </motion.div>
         <div className="flex items-baseline gap-1.5">
-          <span className="font-bold text-sm tracking-widest text-amber-300" style={{ textShadow: '0 0 12px rgba(245,158,11,0.5)' }}>
-            HEXACORE
+          {isAnime ? (
+            <span
+              className="font-orbitron font-bold text-sm tracking-widest glitch"
+              data-text="HEXACORE"
+              style={{ color: 'var(--hive-accent)', textShadow: '0 0 10px var(--hive-accent), 0 0 20px var(--hive-accent-dim)' }}
+            >
+              HEXACORE
+            </span>
+          ) : (
+            <span
+              className="font-orbitron font-bold text-sm tracking-widest"
+              style={{ color: '#ffffff', textShadow: '0 0 12px color-mix(in srgb, var(--hive-accent) 60%, transparent), 0 0 24px color-mix(in srgb, var(--hive-accent) 30%, transparent)' }}
+            >
+              HEXACORE
+            </span>
+          )}
+          <span className="font-mono-tech text-xs" style={{ color: 'color-mix(in srgb, var(--hive-accent) 30%, transparent)' }}>
+            {isAnime ? 'v2.0 / ヘキサコア' : 'v1.0'}
           </span>
-          <span className="text-xs text-slate-600 font-mono">v1.0</span>
         </div>
       </div>
 
       {/* Separator */}
-      <div className="w-px h-5 bg-amber-900/30" />
+      <div className="w-px h-5 flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)' }} />
 
-      {/* Environment selector */}
+      {/* Environment */}
       <button
-        onClick={() => setShowEnv(!showEnv)}
-        className="flex items-center gap-1.5 px-2.5 py-1 rounded text-xs text-slate-400 hover:text-amber-300 hover:bg-amber-900/10 transition-colors font-mono"
+        className="flex items-center gap-1.5 px-2 py-1 rounded text-xs font-mono-tech transition-colors flex-shrink-0"
+        style={{ color: '#b8bdd0', background: 'transparent' }}
       >
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-        production
-        <ChevronDown size={10} />
+        <motion.span
+          className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+          style={{ background: '#10b981' }}
+          animate={{ opacity: [1, 0.3, 1] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        />
+        {isAnime ? '本番環境' : 'production'}
+        <ChevronDown size={9} />
       </button>
 
       {/* Session */}
-      <div className="flex items-center gap-1.5 text-xs font-mono text-slate-600">
-        <span>SESSION</span>
-        <span className="text-amber-700">wf-001</span>
+      <div className="flex items-center gap-1 text-xs font-mono-tech flex-shrink-0" style={{ color: '#b8bdd0' }}>
+        {isAnime ? 'セッション' : 'SESSION'}
+        <span style={{ color: 'var(--hive-accent)' }}>wf-001</span>
       </div>
 
       <div className="flex-1" />
 
-      {/* Hive status */}
-      <div className="flex items-center gap-3 mr-2">
-        <HiveStatusIndicator label="QUEEN" active={true} />
-        <HiveStatusIndicator label="WORKERS" count={4} active={isRunning} />
-        <HiveStatusIndicator label="TASKS" count={5} active={isRunning} />
+      {/* Status indicators */}
+      <div className="flex items-center gap-3 mr-1">
+        <StatusPip label={isAnime ? '女王' : 'QUEEN'} active color="var(--hive-accent)" isAnime={isAnime} />
+        <StatusPip label={isAnime ? '×4' : 'WORKERS ×4'} active={isRunning} color="var(--hive-accent)" isAnime={isAnime} />
+        <StatusPip label={isAnime ? '×5' : 'TASKS ×5'} active={isRunning} color="var(--hive-accent)" isAnime={isAnime} />
       </div>
 
-      {/* Separator */}
-      <div className="w-px h-5 bg-amber-900/30" />
+      <div className="w-px h-5 flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)' }} />
+
+      {/* Theme button */}
+      <button
+        onClick={() => setShowThemes(p => !p)}
+        className="flex items-center gap-1.5 px-2 py-1 rounded text-xs font-mono-tech transition-all flex-shrink-0"
+        style={{
+          color: showThemes ? 'var(--hive-accent-text)' : 'color-mix(in srgb, var(--hive-accent) 50%, #6b7280)',
+          background: showThemes ? 'var(--hive-accent-muted)' : 'transparent',
+          border: `1px solid ${showThemes ? 'color-mix(in srgb, var(--hive-accent) 40%, transparent)' : 'transparent'}`,
+        }}
+      >
+        <Palette size={12} />
+        <span className="hidden sm:inline">{isAnime ? 'テーマ' : 'THEME'}</span>
+      </button>
 
       {/* Actions */}
-      <div className="flex items-center gap-1.5">
-        <ActionButton icon={<Plus size={13} />} label="New Task" onClick={onNewTask} variant="primary" />
-        <ActionButton icon={<Play size={13} />} label="Run" onClick={() => {}} variant="ghost" />
-        <ActionButton icon={<Pause size={13} />} label="Pause" onClick={() => {}} variant="ghost" />
-        <ActionButton icon={<Square size={13} />} label="Abort" onClick={() => {}} variant="danger" />
+      <div className="flex items-center gap-1">
+        <AnimeButton icon={<Plus size={12} />} label={isAnime ? '新タスク' : 'New Task'} onClick={onNewTask} variant="primary" isAnime={isAnime} />
+        <AnimeButton icon={<Play size={12} />} label={isAnime ? '実行' : 'Run'} onClick={() => {}} variant="ghost" isAnime={isAnime} />
+        <AnimeButton icon={<Pause size={12} />} label={isAnime ? '停止' : 'Pause'} onClick={() => {}} variant="ghost" isAnime={isAnime} />
+        <AnimeButton icon={<Square size={12} />} label={isAnime ? '中断' : 'Abort'} onClick={() => {}} variant="danger" isAnime={isAnime} />
       </div>
 
       {/* Live indicator */}
       {isRunning && (
-        <div className="flex items-center gap-1.5 ml-1">
+        <div className="flex items-center gap-1 ml-1 flex-shrink-0">
           <motion.div
-            className="w-1.5 h-1.5 rounded-full bg-amber-400"
-            animate={{ opacity: [1, 0.3, 1] }}
-            transition={{ duration: 1, repeat: Infinity }}
+            className="w-1.5 h-1.5 rounded-full"
+            style={{ background: 'var(--hive-accent)' }}
+            animate={{ opacity: [1, 0.2, 1] }}
+            transition={{ duration: 0.8, repeat: Infinity }}
           />
-          <span className="text-xs font-mono text-amber-500">LIVE</span>
+          <span className="font-mono-tech text-xs" style={{ color: 'var(--hive-accent)' }}>
+            {isAnime ? 'ライブ' : 'LIVE'}
+          </span>
         </div>
       )}
 
-      {/* Bottom glow line */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-600/30 to-transparent" />
+      {/* Bottom accent line */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-px"
+        style={{ background: `linear-gradient(90deg, transparent, var(--hive-accent), transparent)`, opacity: isAnime ? 0.6 : 0.25 }}
+      />
+
+      <ThemePicker
+        open={showThemes}
+        currentTheme={currentTheme}
+        onSelect={t => { onThemeChange(t); setShowThemes(false); }}
+        onClose={() => setShowThemes(false)}
+      />
     </div>
   );
 }
 
-function HiveStatusIndicator({ label, active, count }: { label: string; active: boolean; count?: number }) {
+function StatusPip({ label, active, color, isAnime }: { label: string; active: boolean; color: string; isAnime: boolean }) {
   return (
     <div className="flex items-center gap-1.5">
       <motion.div
         className="w-1.5 h-1.5 rounded-full"
-        style={{ background: active ? '#f59e0b' : '#374151' }}
-        animate={active ? { opacity: [1, 0.4, 1] } : {}}
+        style={{ background: active ? color : '#374151' }}
+        animate={active ? { opacity: [1, 0.3, 1] } : {}}
         transition={{ duration: 1.5, repeat: Infinity }}
       />
-      <span className="text-xs font-mono text-slate-500">
-        {label}{count !== undefined ? ` ×${count}` : ''}
+      <span className="font-mono-tech text-xs" style={{ color: active ? '#b8bdd0' : '#4b5563', fontSize: 10 }}>
+        {label}
       </span>
     </div>
   );
 }
 
-function ActionButton({ icon, label, onClick, variant }: {
+function AnimeButton({ icon, label, onClick, variant, isAnime }: {
   icon: React.ReactNode; label: string; onClick: () => void;
-  variant: 'primary' | 'ghost' | 'danger';
+  variant: 'primary' | 'ghost' | 'danger'; isAnime: boolean;
 }) {
+  const base = 'flex items-center gap-1 px-2 py-1 text-xs font-mono-tech transition-all rounded';
   const styles = {
-    primary: 'bg-amber-600/20 border border-amber-600/40 text-amber-300 hover:bg-amber-600/30 hover:border-amber-500/60',
-    ghost: 'bg-transparent border border-slate-700/50 text-slate-400 hover:text-slate-200 hover:border-slate-600',
-    danger: 'bg-transparent border border-red-900/40 text-red-600 hover:text-red-400 hover:border-red-700/60',
+    primary: isAnime
+      ? `${base} border` + ' hover:opacity-90'
+      : `${base} bg-amber-600/20 border border-amber-600/50 text-amber-200 hover:bg-amber-600/30`,
+    ghost: `${base} border border-transparent hover:border-white/10 text-secondary hover:text-slate-200`,
+    danger: `${base} border border-transparent text-red-600 hover:text-red-400 hover:border-red-900/40`,
   };
 
   return (
-    <button
+    <motion.button
       onClick={onClick}
-      className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium transition-all ${styles[variant]}`}
+      className={styles[variant]}
+      style={variant === 'primary' && isAnime ? {
+        background: 'color-mix(in srgb, var(--hive-accent) 12%, transparent)',
+        borderColor: 'color-mix(in srgb, var(--hive-accent) 50%, transparent)',
+        color: 'var(--hive-accent-text)',
+        boxShadow: '0 0 8px color-mix(in srgb, var(--hive-accent) 20%, transparent)',
+      } : {}}
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.97 }}
     >
       {icon}
       <span>{label}</span>
-    </button>
+    </motion.button>
   );
 }

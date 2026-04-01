@@ -3,14 +3,17 @@ import { motion } from 'framer-motion';
 import { Crown, AlertTriangle, CheckCircle, Clock, Zap, ChevronRight, Shield } from 'lucide-react';
 import { MOCK_AGENTS, MOCK_WORKFLOW, MOCK_MESSAGES } from '../lib/mockData';
 
-export function QueenChamber() {
+export function QueenChamber({ isAnime = false }: { isAnime?: boolean }) {
   const queen = MOCK_AGENTS.find(a => a.id === 'queen')!;
   const wf = MOCK_WORKFLOW;
   const recentMessages = MOCK_MESSAGES.slice(-4).reverse();
 
   return (
     <div className="h-full overflow-y-auto p-6">
-      <div className="text-xs font-mono text-amber-700/50 tracking-widest mb-6">QUEEN CHAMBER — THRONE ROOM</div>
+      <div className={`text-xs tracking-widest mb-6 ${isAnime ? 'font-mono-tech' : 'font-mono'}`}
+        style={{ color: 'color-mix(in srgb, var(--hive-accent) 40%, transparent)' }}>
+        {isAnime ? '女王の間 / QUEEN CHAMBER' : 'QUEEN CHAMBER — THRONE ROOM'}
+      </div>
 
       <div className="grid grid-cols-3 gap-4">
         {/* Queen status card */}
@@ -49,8 +52,8 @@ export function QueenChamber() {
               </div>
 
               <div className="text-center mb-4">
-                <div className="text-base font-bold text-amber-300 mb-0.5">Queen</div>
-                <div className="text-xs text-slate-500">{queen.role}</div>
+                <div className="text-base font-bold mb-0.5" style={{ color: '#ffffff' }}>Queen</div>
+                <div className="text-xs" style={{ color: '#94a3b8' }}>{queen.role}</div>
                 <div className="flex items-center justify-center gap-1.5 mt-2">
                   <motion.div className="w-1.5 h-1.5 rounded-full bg-amber-400"
                     animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1, repeat: Infinity }} />
@@ -73,13 +76,13 @@ export function QueenChamber() {
           {/* Active workflow */}
           <div className="rounded-lg border border-amber-900/20 bg-hive-panel/60 p-4">
             <div className="flex items-center justify-between mb-3">
-              <div className="text-xs font-mono text-amber-700/60 tracking-widest">ACTIVE WORKFLOW</div>
+              <div className="text-xs font-mono tracking-widest" style={{ color: '#b8bdd0' }}>ACTIVE WORKFLOW</div>
               <span className={`text-xs font-mono px-2 py-0.5 rounded ${
                 wf.status === 'running' ? 'bg-amber-900/20 text-amber-400' : 'bg-emerald-900/20 text-emerald-400'
               }`}>{wf.status.toUpperCase()}</span>
             </div>
-            <div className="text-sm font-semibold text-slate-100 mb-1">{wf.name}</div>
-            <div className="text-xs text-slate-500 mb-3">{wf.description}</div>
+            <div className="text-sm mb-1" style={{ color: '#f0f0f5', fontWeight: 600 }}>{wf.name}</div>
+            <div className="text-xs mb-3" style={{ color: '#94a3b8' }}>{wf.description}</div>
 
             {/* Progress */}
             <div className="flex items-center gap-3 mb-3">
@@ -89,7 +92,7 @@ export function QueenChamber() {
                   initial={{ width: 0 }} animate={{ width: `${wf.progress}%` }}
                   transition={{ duration: 1 }} />
               </div>
-              <span className="text-xs font-mono text-amber-500">{wf.progress}%</span>
+              <span className="text-xs font-mono" style={{ color: '#fbbf24' }}>{wf.progress}%</span>
             </div>
 
             {/* Task status grid */}
@@ -108,16 +111,16 @@ export function QueenChamber() {
           {/* Risk + Blockers */}
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-lg border border-amber-900/20 bg-hive-panel/60 p-3">
-              <div className="text-xs font-mono text-amber-700/60 tracking-widest mb-2">RISK LEVEL</div>
+              <div className="text-xs font-mono tracking-widest mb-2" style={{ color: '#b8bdd0' }}>RISK LEVEL</div>
               <div className="flex items-center gap-2">
                 <AlertTriangle size={16} className={wf.riskLevel === 'high' ? 'text-red-400' : wf.riskLevel === 'medium' ? 'text-amber-400' : 'text-emerald-400'} />
-                <span className={`text-sm font-bold uppercase ${wf.riskLevel === 'high' ? 'text-red-400' : wf.riskLevel === 'medium' ? 'text-amber-400' : 'text-emerald-400'}`}>
+                <span className={`text-sm font-bold uppercase`} style={{ color: wf.riskLevel === 'high' ? '#f87171' : wf.riskLevel === 'medium' ? '#fbbf24' : '#34d399' }}>
                   {wf.riskLevel}
                 </span>
               </div>
             </div>
             <div className="rounded-lg border border-amber-900/20 bg-hive-panel/60 p-3">
-              <div className="text-xs font-mono text-amber-700/60 tracking-widest mb-2">PENDING APPROVALS</div>
+              <div className="text-xs font-mono tracking-widest mb-2" style={{ color: '#b8bdd0' }}>PENDING APPROVALS</div>
               <div className="flex items-center gap-2">
                 <Shield size={16} className="text-slate-600" />
                 <span className="text-sm font-bold text-slate-400">0 pending</span>
@@ -127,19 +130,19 @@ export function QueenChamber() {
 
           {/* Recent messages from workers */}
           <div className="rounded-lg border border-amber-900/20 bg-hive-panel/60 p-4">
-            <div className="text-xs font-mono text-amber-700/60 tracking-widest mb-3">WORKER SIGNALS</div>
+            <div className="text-xs font-mono tracking-widest mb-3" style={{ color: '#b8bdd0' }}>WORKER SIGNALS</div>
             <div className="space-y-2">
               {recentMessages.map(m => (
-                <div key={m.id} className="flex items-start gap-2.5 py-1.5 border-b border-slate-800/40">
+                <div key={m.id} className="flex items-start gap-2.5 py-1.5 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
                   <div className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0"
-                    style={{ background: m.type === 'risk' ? '#ef4444' : m.type === 'result' ? '#10b981' : '#f59e0b' }} />
+                    style={{ background: m.type === 'risk' ? '#f87171' : m.type === 'result' ? '#34d399' : '#fbbf24' }} />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
-                      <span className="text-xs font-mono text-amber-600/80">{m.from}</span>
-                      <span className="text-xs font-mono text-slate-700">{m.type}</span>
-                      <span className="text-xs text-slate-700 ml-auto">{new Date(m.timestamp).toLocaleTimeString()}</span>
+                      <span className="text-xs font-mono" style={{ color: '#fbbf24' }}>{m.from}</span>
+                      <span className="text-xs font-mono" style={{ color: '#94a3b8' }}>{m.type}</span>
+                      <span className="text-xs ml-auto" style={{ color: '#6b7280' }}>{new Date(m.timestamp).toLocaleTimeString()}</span>
                     </div>
-                    <div className="text-xs text-slate-400 truncate">{m.content}</div>
+                    <div className="text-xs truncate" style={{ color: '#d1d5db' }}>{m.content}</div>
                   </div>
                 </div>
               ))}
@@ -153,8 +156,8 @@ export function QueenChamber() {
 
 function StatRow({ label, value, color }: { label: string; value: string; color: string }) {
   return (
-    <div className="flex items-center justify-between py-1 border-b border-amber-900/10">
-      <span className="text-xs text-slate-600">{label}</span>
+    <div className="flex items-center justify-between py-1 border-b" style={{ borderColor: 'rgba(245,158,11,0.08)' }}>
+      <span className="text-xs" style={{ color: '#94a3b8' }}>{label}</span>
       <span className="text-xs font-mono" style={{ color }}>{value}</span>
     </div>
   );

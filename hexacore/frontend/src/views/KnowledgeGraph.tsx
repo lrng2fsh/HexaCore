@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen } from 'lucide-react';
+import { ZoomPanCanvas } from '../components/ZoomPanCanvas';
 
 interface KNode { id: string; label: string; type: string; x: number; y: number; connections: string[] }
 
@@ -21,12 +22,16 @@ const TYPE_COLOR: Record<string, string> = {
   fix: '#10b981', test: '#f59e0b', schema: '#06b6d4', index: '#10b981',
 };
 
-export function KnowledgeGraph() {
+export function KnowledgeGraph({ isAnime = false }: { isAnime?: boolean }) {
   return (
     <div className="h-full overflow-hidden p-6">
-      <div className="text-xs font-mono text-amber-700/50 tracking-widest mb-4">KNOWLEDGE GRAPH — POLLEN STORE</div>
+      <div className={`text-xs tracking-widest mb-4 ${isAnime ? 'font-mono-tech' : 'font-mono'}`}
+        style={{ color: 'color-mix(in srgb, var(--hive-accent) 40%, transparent)' }}>
+        {isAnime ? '知識グラフ / KNOWLEDGE GRAPH' : 'KNOWLEDGE GRAPH — POLLEN STORE'}
+      </div>
 
-      <div className="relative w-full h-full">
+      <ZoomPanCanvas className="flex-1">
+        <div className="relative w-full h-full">
         <svg className="absolute inset-0 w-full h-full pointer-events-none">
           {KNODES.map(node =>
             node.connections.map(targetId => {
@@ -69,7 +74,8 @@ export function KnowledgeGraph() {
             </div>
           </motion.div>
         ))}
-      </div>
+        </div>
+      </ZoomPanCanvas>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { TaskNode, TaskRequest, Workflow } from '../../types';
+import { AgentTaskResult, TaskExecutionContext, TaskNode, TaskRequest, Workflow } from '../../types';
 import { BaseAgent } from '../../core/agent-registry/BaseAgent';
 import { WorkflowEngine } from '../../core/workflow-engine/WorkflowEngine';
 import { generateId } from '../../utils/id';
@@ -10,86 +10,132 @@ export class QueenAgent extends BaseAgent {
     this.engine = engine;
   }
 
-  // Queen does NOT do specialist work — only orchestrates
-  async executeTask(task: TaskNode): Promise<Record<string, unknown>> {
+  // Queen orchestrates only — no specialist work
+  async executeTaskWithContext(ctx: TaskExecutionContext): Promise<AgentTaskResult> {
     this.status = 'busy';
-    this.log('Queen received orchestration task', { taskId: task.id });
-
-    const result = await this.reason(
-      `Orchestration task: ${task.type}\nInput: ${JSON.stringify(task.input)}\nProduce a coordination summary.`
-    );
-
-    this.send('*', 'finding', task.id, {
-      from: 'queen',
-      summary: result,
-      message: 'Queen coordination complete',
+    this.log('Queen coordination task', { nodeId: ctx.nodeId });
+    this.emitSignal(ctx.workflowId, 'active', {
+      taskId: ctx.nodeId,
+      message: 'Coordinating workflow',
+      activityLevel: 50,
     });
 
+    const decision = this.recordDecision(
+      ctx.workflowId,
+      `Coordination checkpoint: ${ctx.taskType}`,
+      'Queen reviewed upstream outputs and confirmed workflow progression'
+    );
+
+    this.sendStructuredMessage('*', 'status_update', ctx.nodeId, {
+      workflowId: ctx.workflowId,
+      message: 'Queen coordination complete',
+      taskType: ctx.taskType,
+    });
+
+    this.emitSignal(ctx.workflowId, 'complete', { taskId: ctx.nodeId, activityLevel: 100 });
     this.status = 'idle';
-    return result;
+
+    return {
+      status: 'success',
+      summary: `Queen coordination complete for ${ctx.taskType}`,
+      findings: [],
+      risks: [],
+      artifacts: [],
+      decisions: [decision],
+    };
   }
 
   async intakeTask(request: TaskRequest): Promise<Workflow> {
     if (!this.engine) throw new Error('WorkflowEngine not attached to Queen');
 
     this.log('Intake task', { title: request.title });
+    this.status = 'busy';
 
-    // Queen generates the DAG based on the task
     const dag = this.buildDAG(request);
-
     const workflow = this.engine.createWorkflow(
       request.title,
       request.description,
-      dag
+      dag,
+      { category: request.category ?? 'bug', priority: request.priority ?? 'medium' }
     );
 
-    this.send('*', 'finding', workflow.id, {
+    this.emitSignal(workflow.id, 'active', {
+      message: `Workflow created: ${workflow.id} — ${dag.length} nodes`,
+      activityLevel: 30,
+      linkedAgents: dag.map(n => n.assigned_agent),
+    });
+
+    this.sendStructuredMessage('*', 'finding', workflow.id, {
+      workflowId: workflow.id,
       message: `Queen created workflow: ${workflow.id}`,
-      nodes: dag.map((n) => n.id),
+      nodes: dag.map(n => ({ id: n.id, type: n.type, agent: n.assigned_agent })),
     });
 
     this.log('Executing workflow', { workflowId: workflow.id });
     const result = await this.engine.execute(workflow.id);
 
-    result.summary = this.buildSummary(result);
+    // Build final summary from all node outputs
+    result.summary = this.buildFinalSummary(result);
 
-    this.send('*', 'result', workflow.id, {
-      message: 'Workflow complete',
-      status: result.status,
-      summary: result.summary,
+    // Record final decision
+    const finalDecision = this.recordDecision(
+      workflow.id,
+      `Workflow ${result.status.toUpperCase()}: ${result.name}`,
+      this.buildDecisionRationale(result)
+    );
+
+    // Create decision note artifact
+    const decisionArtifact = this.createArtifact({
+      type: 'decision_note',
+      name: 'queen-summary.md',
+      content: result.summary,
+      workflowId: workflow.id,
+      nodeId: 'queen',
+      metadata: { status: result.status, nodeCount: result.nodes.length },
     });
 
+    this.sendStructuredMessage('*', 'result', workflow.id, {
+      workflowId: workflow.id,
+      status: result.status,
+      summary: result.summary,
+      artifactId: decisionArtifact.id,
+      totalArtifacts: result.artifacts.length,
+    });
+
+    this.emitSignal(workflow.id, result.status === 'done' ? 'complete' : 'error', {
+      message: result.summary.slice(0, 120),
+      activityLevel: result.status === 'done' ? 100 : 20,
+    });
+
+    this.status = 'idle';
     return result;
   }
 
-  private buildDAG(request: TaskRequest): Omit<TaskNode, 'status' | 'artifacts'>[] {
-    // Queen dynamically builds task graph based on request keywords
+  private buildDAG(request: TaskRequest): Omit<TaskNode, 'status' | 'artifacts' | 'output'>[] {
     const title = request.title.toLowerCase();
-
     if (title.includes('export') || title.includes('fix') || title.includes('bug')) {
       return this.exportFixDAG(request);
     }
-
-    // Default generic DAG
+    // Generic analysis DAG
     return [
       {
         id: generateId('task'),
         type: 'analyze',
         assigned_agent: 'app-agent',
         dependencies: [],
-        input: { request },
+        input: { request, instruction: 'Analyze the codebase for issues', workflowId: '' },
       },
       {
         id: generateId('task'),
         type: 'validate',
         assigned_agent: 'qa-agent',
         dependencies: [],
-        input: { request },
+        input: { request, instruction: 'Validate the system state', workflowId: '' },
       },
     ];
   }
 
-  private exportFixDAG(request: TaskRequest): Omit<TaskNode, 'status' | 'artifacts'>[] {
+  private exportFixDAG(request: TaskRequest): Omit<TaskNode, 'status' | 'artifacts' | 'output'>[] {
     const t1 = generateId('task');
     const t2 = generateId('task');
     const t3 = generateId('task');
@@ -98,50 +144,58 @@ export class QueenAgent extends BaseAgent {
 
     return [
       {
-        id: t1,
-        type: 'analyze_code',
-        assigned_agent: 'app-agent',
+        id: t1, type: 'analyze_code', assigned_agent: 'app-agent',
         dependencies: [],
         input: { request, instruction: 'Analyze code for export failure root cause' },
       },
       {
-        id: t2,
-        type: 'check_schema',
-        assigned_agent: 'dba-agent',
+        id: t2, type: 'check_schema', assigned_agent: 'dba-agent',
         dependencies: [],
         input: { request, instruction: 'Check database schema for export-related issues' },
       },
       {
-        id: t3,
-        type: 'reproduce_bug',
-        assigned_agent: 'qa-agent',
+        id: t3, type: 'reproduce_bug', assigned_agent: 'qa-agent',
         dependencies: [t1, t2],
-        input: { request, instruction: 'Reproduce the export failure using findings from analysis' },
+        input: { request, instruction: 'Reproduce the export failure using upstream findings' },
       },
       {
-        id: t4,
-        type: 'build_fix',
-        assigned_agent: 'build-agent',
+        id: t4, type: 'build_fix', assigned_agent: 'build-agent',
         dependencies: [t3],
-        input: { request, instruction: 'Build and package the fix' },
+        input: { request, instruction: 'Build and package the null-check fix' },
       },
       {
-        id: t5,
-        type: 'validate_fix',
-        assigned_agent: 'qa-agent',
+        id: t5, type: 'validate_fix', assigned_agent: 'qa-agent',
         dependencies: [t4],
-        input: { request, instruction: 'Validate the fix resolves the export failure' },
+        input: { request, instruction: 'Validate the fix resolves the export failure with no regressions' },
       },
     ];
   }
 
-  private buildSummary(workflow: Workflow): string {
-    const done = workflow.nodes.filter((n) => n.status === 'done').length;
+  private buildFinalSummary(workflow: Workflow): string {
+    const done = workflow.nodes.filter(n => n.status === 'done').length;
     const total = workflow.nodes.length;
-    const outputs = workflow.nodes
-      .filter((n) => n.output)
-      .map((n) => `[${n.assigned_agent}] ${JSON.stringify(n.output).slice(0, 100)}`)
-      .join('\n');
-    return `Workflow ${workflow.status.toUpperCase()}: ${done}/${total} tasks completed.\n${outputs}`;
+    const allRisks = workflow.nodes
+      .flatMap(n => n.output?.risks ?? [])
+      .map(r => `[${r.severity.toUpperCase()}] ${r.summary}`);
+    const allFindings = workflow.nodes
+      .flatMap(n => n.output?.findings ?? [])
+      .slice(0, 6);
+
+    return [
+      `# Workflow Summary: ${workflow.name}`,
+      `**Status:** ${workflow.status.toUpperCase()} | **Progress:** ${done}/${total} tasks`,
+      `**Artifacts:** ${workflow.artifacts.length} produced`,
+      ``,
+      `## Key Findings`,
+      allFindings.map(f => `- ${f}`).join('\n'),
+      ``,
+      `## Risks Identified`,
+      allRisks.length > 0 ? allRisks.map(r => `- ${r}`).join('\n') : '- None',
+    ].join('\n');
+  }
+
+  private buildDecisionRationale(workflow: Workflow): string {
+    const decisions = workflow.nodes.flatMap(n => n.output?.decisions ?? []);
+    return decisions.map(d => `${d.decidedBy}: ${d.summary}`).join('; ') || 'Workflow executed to completion';
   }
 }
