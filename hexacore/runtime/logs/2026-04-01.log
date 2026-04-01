@@ -70,3 +70,47 @@
 {"timestamp":"2026-04-01T15:28:37.569Z","level":"INFO","context":"WorkflowEngine","message":"Node task-5fec2c56-1636-4a98-9d82-cc3aaf115341 completed"}
 {"timestamp":"2026-04-01T15:28:37.616Z","level":"INFO","context":"WorkflowEngine","message":"Workflow wf-c338078a-c21f-4c58-bfcc-1bdad437cfee finished: done"}
 {"timestamp":"2026-04-01T15:28:37.618Z","level":"INFO","context":"MessageBus","message":"queen → * [result]","data":{"task_id":"wf-c338078a-c21f-4c58-bfcc-1bdad437cfee","payload":{"message":"Workflow complete","status":"done","summary":"Workflow DONE: 5/5 tasks completed.\n[app-agent] {\"finding\":\"Identified null reference in export handler at ExportService.ts:142\",\"severity\":\"high\",\"\n[dba-agent] {\"schemaInfo\":{\"users\":[\"id\",\"name\",\"email\",\"created_at\"],\"orders\":[\"id\",\"user_id\",\"product\",\"status\n[qa-agent] {\"reproduced\":true,\"steps\":[\"Create order with 0 items\",\"Trigger export\",\"Observe NullReferenceExcep\n[build-agent] {\"buildResult\":{\"status\":\"compiled\",\"warnings\":0,\"errors\":0},\"testResult\":{\"passed\":42,\"failed\":0,\"s\n[qa-agent] {\"validated\":true,\"exportSuccess\":true,\"regressionsPassed\":true,\"summary\":\"Fix verified — export now"}}}
+{"timestamp":"2026-04-01T15:56:31.540Z","level":"INFO","context":"Orchestrator","message":"Initializing Hexacore..."}
+{"timestamp":"2026-04-01T15:56:31.544Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: file"}
+{"timestamp":"2026-04-01T15:56:31.545Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: sql"}
+{"timestamp":"2026-04-01T15:56:31.546Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: build"}
+{"timestamp":"2026-04-01T15:56:31.555Z","level":"DEBUG","context":"MessageBus","message":"Agent app-agent subscribed"}
+{"timestamp":"2026-04-01T15:56:31.556Z","level":"INFO","context":"app-agent","message":"Agent initialized — role: Application Engineer"}
+{"timestamp":"2026-04-01T15:56:31.556Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: app-agent"}
+{"timestamp":"2026-04-01T15:56:31.567Z","level":"DEBUG","context":"MessageBus","message":"Agent build-agent subscribed"}
+{"timestamp":"2026-04-01T15:56:31.567Z","level":"INFO","context":"build-agent","message":"Agent initialized — role: Build Engineer"}
+{"timestamp":"2026-04-01T15:56:31.568Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: build-agent"}
+{"timestamp":"2026-04-01T15:56:31.576Z","level":"DEBUG","context":"MessageBus","message":"Agent dba-agent subscribed"}
+{"timestamp":"2026-04-01T15:56:31.576Z","level":"INFO","context":"dba-agent","message":"Agent initialized — role: Database Administrator"}
+{"timestamp":"2026-04-01T15:56:31.577Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: dba-agent"}
+{"timestamp":"2026-04-01T15:56:31.587Z","level":"DEBUG","context":"MessageBus","message":"Agent qa-agent subscribed"}
+{"timestamp":"2026-04-01T15:56:31.588Z","level":"INFO","context":"qa-agent","message":"Agent initialized — role: QA Engineer"}
+{"timestamp":"2026-04-01T15:56:31.588Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: qa-agent"}
+{"timestamp":"2026-04-01T15:56:31.599Z","level":"DEBUG","context":"MessageBus","message":"Agent queen subscribed"}
+{"timestamp":"2026-04-01T15:56:31.599Z","level":"INFO","context":"queen","message":"Agent initialized — role: Queen Orchestrator"}
+{"timestamp":"2026-04-01T15:56:31.600Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: queen"}
+{"timestamp":"2026-04-01T15:56:31.600Z","level":"INFO","context":"AgentRegistry","message":"Loaded 5 agents from E:\\Dev\\HexaCore\\hexacore\\config\\agents"}
+{"timestamp":"2026-04-01T15:56:31.601Z","level":"INFO","context":"Orchestrator","message":"Hexacore initialized","data":{"agents":["app-agent","build-agent","dba-agent","qa-agent","queen"],"tools":["file","sql","build"]}}
+{"timestamp":"2026-04-01T15:56:31.603Z","level":"INFO","context":"API","message":"Hexacore backend running on http://localhost:3001"}
+{"timestamp":"2026-04-01T15:59:23.217Z","level":"INFO","context":"Orchestrator","message":"Initializing Hexacore..."}
+{"timestamp":"2026-04-01T15:59:23.219Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: file"}
+{"timestamp":"2026-04-01T15:59:23.220Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: sql"}
+{"timestamp":"2026-04-01T15:59:23.220Z","level":"INFO","context":"ToolRegistry","message":"Registered tool: build"}
+{"timestamp":"2026-04-01T15:59:23.221Z","level":"DEBUG","context":"MessageBus","message":"Agent app-agent subscribed"}
+{"timestamp":"2026-04-01T15:59:23.221Z","level":"INFO","context":"app-agent","message":"Agent initialized — role: Application Engineer"}
+{"timestamp":"2026-04-01T15:59:23.222Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: app-agent"}
+{"timestamp":"2026-04-01T15:59:23.222Z","level":"DEBUG","context":"MessageBus","message":"Agent build-agent subscribed"}
+{"timestamp":"2026-04-01T15:59:23.223Z","level":"INFO","context":"build-agent","message":"Agent initialized — role: Build Engineer"}
+{"timestamp":"2026-04-01T15:59:23.223Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: build-agent"}
+{"timestamp":"2026-04-01T15:59:23.224Z","level":"DEBUG","context":"MessageBus","message":"Agent dba-agent subscribed"}
+{"timestamp":"2026-04-01T15:59:23.224Z","level":"INFO","context":"dba-agent","message":"Agent initialized — role: Database Administrator"}
+{"timestamp":"2026-04-01T15:59:23.224Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: dba-agent"}
+{"timestamp":"2026-04-01T15:59:23.225Z","level":"DEBUG","context":"MessageBus","message":"Agent qa-agent subscribed"}
+{"timestamp":"2026-04-01T15:59:23.226Z","level":"INFO","context":"qa-agent","message":"Agent initialized — role: QA Engineer"}
+{"timestamp":"2026-04-01T15:59:23.226Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: qa-agent"}
+{"timestamp":"2026-04-01T15:59:23.227Z","level":"DEBUG","context":"MessageBus","message":"Agent queen subscribed"}
+{"timestamp":"2026-04-01T15:59:23.227Z","level":"INFO","context":"queen","message":"Agent initialized — role: Queen Orchestrator"}
+{"timestamp":"2026-04-01T15:59:23.228Z","level":"INFO","context":"AgentRegistry","message":"Instantiated agent: queen"}
+{"timestamp":"2026-04-01T15:59:23.228Z","level":"INFO","context":"AgentRegistry","message":"Loaded 5 agents from E:\\Dev\\HexaCore\\hexacore\\config\\agents"}
+{"timestamp":"2026-04-01T15:59:23.229Z","level":"INFO","context":"Orchestrator","message":"Hexacore initialized","data":{"agents":["app-agent","build-agent","dba-agent","qa-agent","queen"],"tools":["file","sql","build"]}}
+{"timestamp":"2026-04-01T15:59:23.232Z","level":"INFO","context":"API","message":"Hexacore backend running on http://localhost:3001"}
