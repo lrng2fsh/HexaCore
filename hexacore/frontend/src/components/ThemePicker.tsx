@@ -17,6 +17,7 @@ const THEME_PREVIEW: Record<ThemeId, { swatch: string[]; label: string }> = {
   crimson: { swatch: ['#f43f5e', '#e11d48', '#0f0508'], label: '🔴' },
   arctic:  { swatch: ['#6366f1', '#4f46e5', '#f8fafc'], label: '⚪' },
   anime:   { swatch: ['#00fff0', '#ff00aa', '#02040a'], label: '⚡' },
+  persian: { swatch: ['#00fff0', '#10b981', '#0a0f1a'], label: '🇮🇷' },
 };
 
 export function ThemePicker({ open, currentTheme, onSelect, onClose }: ThemePickerProps) {

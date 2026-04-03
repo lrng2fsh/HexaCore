@@ -33,13 +33,29 @@ function makeItems(): NavItemDef[] {
 
 const NAV_ITEMS = makeItems();
 
+// Farsi labels for Persian theme (Unicode escapes to survive encoding)
+const FA: Record<string, string> = {
+  overview:  '\u0646\u0645\u0627\u06CC \u06A9\u0644\u06CC',       // نمای کلی
+  queen:     '\u0645\u0644\u06A9\u0647',                           // ملکه
+  workers:   '\u0632\u0646\u0628\u0648\u0631\u0647\u0627',         // زنبورها
+  flow:      '\u062C\u0631\u06CC\u0627\u0646',                     // جریان
+  system:    '\u0633\u06CC\u0633\u062A\u0645',                     // سیستم
+  knowledge: '\u062F\u0627\u0646\u0634',                           // دانش
+  approvals: '\u062A\u0623\u06CC\u06CC\u062F',                     // تأیید
+  logs:      '\u06AF\u0632\u0627\u0631\u0634',                     // گزارش
+  settings:  '\u062A\u0646\u0638\u06CC\u0645\u0627\u062A',         // تنظیمات
+};
+
 interface NavRailProps {
   activeView: ViewId;
   onNavigate: (view: ViewId) => void;
   isAnime?: boolean;
+  themeId?: string;
 }
 
-export function NavRail({ activeView, onNavigate, isAnime = false }: NavRailProps) {
+export function NavRail({ activeView, onNavigate, isAnime = false, themeId = 'amber' }: NavRailProps) {
+  const isPersian = themeId === 'persian';
+  const isLocalized = isAnime || isPersian;
   return (
     <div
       className="flex flex-col w-16 h-full relative z-40 flex-shrink-0"
@@ -97,12 +113,12 @@ export function NavRail({ activeView, onNavigate, isAnime = false }: NavRailProp
                   />
                 )}
                 <span className="relative z-10">{item.icon}</span>
-                {isAnime && isActive && (
+                {isLocalized && isActive && (
                   <span
-                    className="absolute bottom-0.5 left-0 right-0 text-center font-jp"
-                    style={{ fontSize: 7, color: 'var(--hive-accent)', opacity: 0.7 }}
+                    className="absolute bottom-0.5 left-0 right-0 text-center"
+                    style={{ fontSize: 7, color: 'var(--hive-accent)', opacity: 0.7, fontFamily: isPersian ? 'Vazirmatn, Noto Sans Arabic, sans-serif' : undefined }}
                   >
-                    {item.labelJP}
+                    {isPersian ? (FA[item.id] || item.label) : item.labelJP}
                   </span>
                 )}
               </button>
@@ -118,7 +134,7 @@ export function NavRail({ activeView, onNavigate, isAnime = false }: NavRailProp
                   }}
                 >
                   <div className="font-rajdhani text-sm font-semibold" style={{ color: '#f0f0f5' }}>
-                    {isAnime ? item.labelJP : item.label}
+                    {isPersian ? (FA[item.id] || item.label) : isAnime ? item.labelJP : item.label}
                   </div>
                   <div className="font-mono-tech mt-0.5" style={{ fontSize: 10, color: 'color-mix(in srgb, var(--hive-accent) 50%, transparent)' }}>
                     {item.chamber}

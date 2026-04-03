@@ -2,13 +2,16 @@ import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 // Katakana characters for the rain effect
-const KATAKANA = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+const KATAKANA = '\u30A2\u30A4\u30A6\u30A8\u30AA\u30AB\u30AD\u30AF\u30B1\u30B3\u30B5\u30B7\u30B9\u30BB\u30BD\u30BF\u30C1\u30C4\u30C6\u30C8\u30CA\u30CB\u30CC\u30CD\u30CE\u30CF\u30D2\u30D5\u30D8\u30DB\u30DE\u30DF\u30E0\u30E1\u30E2\u30E4\u30E6\u30E8\u30E9\u30EA\u30EB\u30EC\u30ED\u30EF\u30F2\u30F3';
+// Farsi/Arabic characters for Persian theme
+const FARSI = '\u0627\u0628\u067E\u062A\u062B\u062C\u0686\u062D\u062E\u062F\u0630\u0631\u0632\u0633\u0634\u0635\u0636\u0637\u0638\u0639\u063A\u0641\u0642\u06A9\u06AF\u0644\u0645\u0646\u0648\u0647\u06CC';
 
 interface AnimeOverlayProps {
   isAnime: boolean;
+  isPersian?: boolean;
 }
 
-export function AnimeOverlay({ isAnime }: AnimeOverlayProps) {
+export function AnimeOverlay({ isAnime, isPersian = false }: AnimeOverlayProps) {
   if (!isAnime) return null;
 
   return (
@@ -35,9 +38,9 @@ export function AnimeOverlay({ isAnime }: AnimeOverlayProps) {
       <CornerDeco position="bottom-left" />
       <CornerDeco position="bottom-right" />
 
-      {/* Katakana side strips */}
-      <KatakanaStrip side="left" />
-      <KatakanaStrip side="right" />
+      {/* Katakana/Farsi side strips */}
+      <KatakanaStrip side="left" isPersian={isPersian} />
+      <KatakanaStrip side="right" isPersian={isPersian} />
     </>
   );
 }
@@ -78,9 +81,10 @@ function CornerDeco({ position }: { position: 'top-left' | 'top-right' | 'bottom
   );
 }
 
-function KatakanaStrip({ side }: { side: 'left' | 'right' }) {
+function KatakanaStrip({ side, isPersian = false }: { side: 'left' | 'right'; isPersian?: boolean }) {
+  const charset = isPersian ? FARSI : KATAKANA;
   const chars = Array.from({ length: 20 }, (_, i) =>
-    KATAKANA[Math.floor(Math.random() * KATAKANA.length)]
+    charset[Math.floor(Math.random() * charset.length)]
   );
 
   return (

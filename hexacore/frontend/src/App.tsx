@@ -24,7 +24,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [currentTheme, setCurrentTheme] = useState<Theme>(loadSavedTheme);
 
-  const isAnime = currentTheme.id === 'anime';
+  const isAnime = currentTheme.id === 'anime' || currentTheme.id === 'persian';
 
   useEffect(() => {
     applyTheme(currentTheme);
@@ -50,7 +50,7 @@ export default function App() {
   return (
     <div className="flex flex-col h-screen overflow-hidden hive-bg relative">
       {/* Anime overlay effects */}
-      <AnimeOverlay isAnime={isAnime} />
+      <AnimeOverlay isAnime={isAnime} isPersian={currentTheme.id === 'persian'} />
 
       <TopBar
         onNewTask={() => setTaskModalOpen(true)}
@@ -60,7 +60,7 @@ export default function App() {
       />
 
       <div className="flex flex-1 overflow-hidden">
-        <NavRail activeView={activeView} onNavigate={setActiveView} isAnime={isAnime} />
+        <NavRail activeView={activeView} onNavigate={setActiveView} isAnime={isAnime} themeId={currentTheme.id} />
 
         <div className="flex flex-col flex-1 overflow-hidden">
           <div className="flex-1 overflow-hidden">

@@ -14,6 +14,7 @@
     "@xyflow/react": "^12.10.2",
     "autoprefixer": "^10.4.27",
     "framer-motion": "^12.38.0",
+    "hexacore": "file:..",
     "lucide-react": "^1.7.0",
     "postcss": "^8.5.8",
     "react": "^18.2.0",

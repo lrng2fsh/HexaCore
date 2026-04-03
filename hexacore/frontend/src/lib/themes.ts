@@ -1,4 +1,4 @@
-export type ThemeId = 'amber' | 'cyber' | 'emerald' | 'crimson' | 'arctic' | 'anime';
+export type ThemeId = 'amber' | 'cyber' | 'emerald' | 'crimson' | 'arctic' | 'anime' | 'persian';
 
 export interface Theme {
   id: ThemeId;
@@ -163,6 +163,29 @@ export const THEMES: Record<ThemeId, Theme> = {
       '--hive-scrollbar': '#00fff044',
     },
   },
+
+  persian: {
+    id: 'persian',
+    name: 'Persian / \u0641\u0627\u0631\u0633\u06CC',
+    description: '\u06A9\u0646\u062F\u0648\u06CC \u0632\u0646\u0628\u0648\u0631 \u0639\u0633\u0644 \u2014 Persian hive command',
+    accentHex: '#00fff0',
+    accentRgb: '0, 255, 240',
+    queenGradient: 'linear-gradient(135deg, #0a1828 0%, #102030 50%, #0a1828 100%)',
+    bgPattern: '%2300fff008',
+    vars: {
+      '--hive-bg': '#0a0f1a',
+      '--hive-surface': '#0e1524',
+      '--hive-panel': '#121c2e',
+      '--hive-border': '#1a2840',
+      '--hive-accent': '#00fff0',
+      '--hive-accent-dim': '#00c8c0',
+      '--hive-accent-glow': '#80fffa',
+      '--hive-accent-text': '#b0fffc',
+      '--hive-accent-muted': 'rgba(0,255,240,0.1)',
+      '--hive-hex-fill': 'rgba(0,255,240,0.04)',
+      '--hive-scrollbar': '#00fff044',
+    },
+  },
 };
 
 export function applyTheme(theme: Theme): void {
@@ -170,10 +193,10 @@ export function applyTheme(theme: Theme): void {
   Object.entries(theme.vars).forEach(([key, value]) => {
     root.style.setProperty(key, value);
   });
-  // Update body background directly for instant feedback
   document.body.style.background = theme.vars['--hive-bg'];
   document.body.style.color = theme.id === 'arctic' ? '#1e293b' : '#e2e8f0';
-  // Store preference
+  // RTL for Persian theme
+  document.documentElement.dir = theme.id === 'persian' ? 'rtl' : 'ltr';
   localStorage.setItem('hexacore-theme', theme.id);
 }
 

@@ -13,7 +13,8 @@ interface TopBarProps {
 
 export function TopBar({ onNewTask, isRunning, currentTheme, onThemeChange }: TopBarProps) {
   const [showThemes, setShowThemes] = useState(false);
-  const isAnime = currentTheme.id === 'anime';
+  const isAnime = currentTheme.id === 'anime' || currentTheme.id === 'persian';
+  const isPersian = currentTheme.id === 'persian';
 
   return (
     <div
@@ -53,7 +54,7 @@ export function TopBar({ onNewTask, isRunning, currentTheme, onThemeChange }: To
             </span>
           )}
           <span className="font-mono-tech text-xs" style={{ color: 'color-mix(in srgb, var(--hive-accent) 30%, transparent)' }}>
-            {isAnime ? 'v2.0 / ヘキサコア' : 'v1.0'}
+            {isAnime ? (isPersian ? 'v2.0 / \u0647\u06AF\u0632\u0627\u06A9\u0648\u0631' : 'v2.0 / \u30D8\u30AD\u30B5\u30B3\u30A2') : 'v1.0'}
           </span>
         </div>
       </div>
@@ -72,13 +73,13 @@ export function TopBar({ onNewTask, isRunning, currentTheme, onThemeChange }: To
           animate={{ opacity: [1, 0.3, 1] }}
           transition={{ duration: 1.5, repeat: Infinity }}
         />
-        {isAnime ? '本番環境' : 'production'}
+        {isPersian ? '\u0645\u062D\u06CC\u0637 \u0639\u0645\u0644\u06CC\u0627\u062A\u06CC' : isAnime ? '\u672C\u756A\u74B0\u5883' : 'production'}
         <ChevronDown size={9} />
       </button>
 
       {/* Session */}
       <div className="flex items-center gap-1 text-xs font-mono-tech flex-shrink-0" style={{ color: '#b8bdd0' }}>
-        {isAnime ? 'セッション' : 'SESSION'}
+        {isPersian ? '\u0646\u0634\u0633\u062A' : isAnime ? '\u30BB\u30C3\u30B7\u30E7\u30F3' : 'SESSION'}
         <span style={{ color: 'var(--hive-accent)' }}>wf-001</span>
       </div>
 
@@ -86,9 +87,9 @@ export function TopBar({ onNewTask, isRunning, currentTheme, onThemeChange }: To
 
       {/* Status indicators */}
       <div className="flex items-center gap-3 mr-1">
-        <StatusPip label={isAnime ? '女王' : 'QUEEN'} active color="var(--hive-accent)" isAnime={isAnime} />
-        <StatusPip label={isAnime ? '×4' : 'WORKERS ×4'} active={isRunning} color="var(--hive-accent)" isAnime={isAnime} />
-        <StatusPip label={isAnime ? '×5' : 'TASKS ×5'} active={isRunning} color="var(--hive-accent)" isAnime={isAnime} />
+        <StatusPip label={isPersian ? '\u0645\u0644\u06A9\u0647' : isAnime ? '\u5973\u738B' : 'QUEEN'} active color="var(--hive-accent)" isAnime={isAnime} />
+        <StatusPip label={isPersian ? '\u00D7\u0034' : isAnime ? '\u00D7\u0034' : 'WORKERS \u00D74'} active={isRunning} color="var(--hive-accent)" isAnime={isAnime} />
+        <StatusPip label={isPersian ? '\u00D7\u0035' : isAnime ? '\u00D7\u0035' : 'TASKS \u00D75'} active={isRunning} color="var(--hive-accent)" isAnime={isAnime} />
       </div>
 
       <div className="w-px h-5 flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)' }} />
@@ -104,15 +105,15 @@ export function TopBar({ onNewTask, isRunning, currentTheme, onThemeChange }: To
         }}
       >
         <Palette size={12} />
-        <span className="hidden sm:inline">{isAnime ? 'テーマ' : 'THEME'}</span>
+        <span className="hidden sm:inline">{isPersian ? '\u067E\u0648\u0633\u062A\u0647' : isAnime ? '\u30C6\u30FC\u30DE' : 'THEME'}</span>
       </button>
 
       {/* Actions */}
       <div className="flex items-center gap-1">
-        <AnimeButton icon={<Plus size={12} />} label={isAnime ? '新タスク' : 'New Task'} onClick={onNewTask} variant="primary" isAnime={isAnime} />
-        <AnimeButton icon={<Play size={12} />} label={isAnime ? '実行' : 'Run'} onClick={() => {}} variant="ghost" isAnime={isAnime} />
-        <AnimeButton icon={<Pause size={12} />} label={isAnime ? '停止' : 'Pause'} onClick={() => {}} variant="ghost" isAnime={isAnime} />
-        <AnimeButton icon={<Square size={12} />} label={isAnime ? '中断' : 'Abort'} onClick={() => {}} variant="danger" isAnime={isAnime} />
+        <AnimeButton icon={<Plus size={12} />} label={isPersian ? '\u0648\u0638\u06CC\u0641\u0647 \u062C\u062F\u06CC\u062F' : isAnime ? '\u65B0\u30BF\u30B9\u30AF' : 'New Task'} onClick={onNewTask} variant="primary" isAnime={isAnime} />
+        <AnimeButton icon={<Play size={12} />} label={isPersian ? '\u0627\u062C\u0631\u0627' : isAnime ? '\u5B9F\u884C' : 'Run'} onClick={() => {}} variant="ghost" isAnime={isAnime} />
+        <AnimeButton icon={<Pause size={12} />} label={isPersian ? '\u062A\u0648\u0642\u0641' : isAnime ? '\u505C\u6B62' : 'Pause'} onClick={() => {}} variant="ghost" isAnime={isAnime} />
+        <AnimeButton icon={<Square size={12} />} label={isPersian ? '\u0644\u063A\u0648' : isAnime ? '\u4E2D\u65AD' : 'Abort'} onClick={() => {}} variant="danger" isAnime={isAnime} />
       </div>
 
       {/* Live indicator */}
@@ -125,7 +126,7 @@ export function TopBar({ onNewTask, isRunning, currentTheme, onThemeChange }: To
             transition={{ duration: 0.8, repeat: Infinity }}
           />
           <span className="font-mono-tech text-xs" style={{ color: 'var(--hive-accent)' }}>
-            {isAnime ? 'ライブ' : 'LIVE'}
+            {isPersian ? '\u0632\u0646\u062F\u0647' : isAnime ? '\u30E9\u30A4\u30D6' : 'LIVE'}
           </span>
         </div>
       )}
